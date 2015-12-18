@@ -50,6 +50,10 @@
       <HintPath>..\..\packages\EntityNetwork.0.2.0-alpha1\lib\net35\EntityNetwork.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityNetwork.Unity3D, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityNetwork.Unity3D.0.2.0-alpha1\lib\net35\EntityNetwork.Unity3D.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NetLegacySupport.Action, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NetLegacySupport.Action.1.1.0\lib\net35\NetLegacySupport.Action.dll</HintPath>
       <Private>True</Private>
