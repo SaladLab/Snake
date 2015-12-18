@@ -84,8 +84,9 @@
       <HintPath>..\..\packages\TypeAlias.1.1.1\lib\net35\TypeAlias.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\EntityNetwork\tools\unity3d\UnityEngine.dll</HintPath>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\tools\unity3d\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
