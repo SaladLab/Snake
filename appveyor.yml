@@ -6,6 +6,6 @@ services:
 before_build:
 - cmd: nuget restore -DisableParallelProcessing -source "https://www.nuget.org/api/v2;https://www.myget.org/F/saladbowlcreative/api/v2"
 build:
-  project: TicTacToe.sln
+  project: Snake.sln
   verbosity: minimal
 test: on
