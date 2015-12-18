@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\EntityNetwork.Templates.0.2.0-alpha1\build\EntityNetwork.Templates.props" Condition="Exists('..\..\packages\EntityNetwork.Templates.0.2.0-alpha1\build\EntityNetwork.Templates.props')" />
+  <Import Project="..\..\packages\TrackableData.Templates.0.2.0-alpha3\build\TrackableData.Templates.props" Condition="Exists('..\..\packages\TrackableData.Templates.0.2.0-alpha3\build\TrackableData.Templates.props')" />
+  <Import Project="..\..\packages\Akka.Interfaced-SlimClient.Templates-Protobuf.0.2.0-alpha4\build\Akka.Interfaced-SlimClient.Templates-Protobuf.props" Condition="Exists('..\..\packages\Akka.Interfaced-SlimClient.Templates-Protobuf.0.2.0-alpha4\build\Akka.Interfaced-SlimClient.Templates-Protobuf.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <EntityNetworkClientEntityBaseClass>EntityNetwork.Unity3D.EntityNetworkBehaviour</EntityNetworkClientEntityBaseClass>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1277B90D-BDD2-438C-A57B-B47349D2D928}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Domain</RootNamespace>
+    <AssemblyName>Domain.Unity3D</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Akka.Interfaced-Base, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Akka.Interfaced-Base.0.2.0-alpha4\lib\net35\Akka.Interfaced-Base.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Akka.Interfaced-SlimClient, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Akka.Interfaced-SlimClient.0.2.0-alpha4\lib\net35\Akka.Interfaced-SlimClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityNetwork, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityNetwork.0.2.0-alpha1\lib\net35\EntityNetwork.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NetLegacySupport.Action, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NetLegacySupport.Action.1.1.0\lib\net35\NetLegacySupport.Action.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NetLegacySupport.ConcurrentDictionary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NetLegacySupport.ConcurrentDictionary.1.1.0\lib\net35\NetLegacySupport.ConcurrentDictionary.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NetLegacySupport.Tuple, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NetLegacySupport.Tuple.1.1.0\lib\net35\NetLegacySupport.Tuple.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\protobuf-net.2.0.0.668\lib\net35\protobuf-net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="TrackableData, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\TrackableData.0.2.0-alpha3\lib\net35\TrackableData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TrackableData.Protobuf, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\TrackableData.Protobuf.0.2.0-alpha3\lib\net35\TrackableData.Protobuf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TypeAlias, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\TypeAlias.1.1.1\lib\net35\TypeAlias.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\EntityNetwork\tools\unity3d\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Domain\Data\IUserContext.cs">
+      <Link>Data\IUserContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\Data\IUserData.cs">
+      <Link>Data\IUserData.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\Game\IFruit.cs">
+      <Link>Game\IFruit.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\Game\ISnake.cs">
+      <Link>Game\ISnake.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\Game\IZoneController.cs">
+      <Link>Game\IZoneController.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\Game\Rule.cs">
+      <Link>Game\Rule.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\Game\ServerFruit.cs">
+      <Link>Game\ServerFruit.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\Game\ServerSnake.cs">
+      <Link>Game\ServerSnake.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\Game\ServerZoneController.cs">
+      <Link>Game\ServerZoneController.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\Interface\GameTypes.cs">
+      <Link>Interface\GameTypes.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\Interface\IGameClient.cs">
+      <Link>Interface\IGameClient.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\Interface\IGameObserver.cs">
+      <Link>Interface\IGameObserver.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\Interface\IUser.cs">
+      <Link>Interface\IUser.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\Interface\IUserEventObserver.cs">
+      <Link>Interface\IUserEventObserver.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\Interface\IUserLogin.cs">
+      <Link>Interface\IUserLogin.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\Interface\IUserPairingObserver.cs">
+      <Link>Interface\IUserPairingObserver.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\Interface\ResultException.cs">
+      <Link>Interface\ResultException.cs</Link>
+    </Compile>
+    <Compile Include="Properties\Akka.Interfaced.CodeGen.Slim.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\EntityNetwork.CodeGen.cs" />
+    <Compile Include="Properties\TrackableData.CodeGen.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\EntityNetwork.Templates.0.2.0-alpha1\build\EntityNetwork.Templates.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EntityNetwork.Templates.0.2.0-alpha1\build\EntityNetwork.Templates.props'))" />
+    <Error Condition="!Exists('..\..\packages\EntityNetwork.Templates.0.2.0-alpha1\build\EntityNetwork.Templates.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EntityNetwork.Templates.0.2.0-alpha1\build\EntityNetwork.Templates.targets'))" />
+    <Error Condition="!Exists('..\..\packages\TrackableData.Templates.0.2.0-alpha3\build\TrackableData.Templates.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\TrackableData.Templates.0.2.0-alpha3\build\TrackableData.Templates.props'))" />
+    <Error Condition="!Exists('..\..\packages\TrackableData.Templates.0.2.0-alpha3\build\TrackableData.Templates.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\TrackableData.Templates.0.2.0-alpha3\build\TrackableData.Templates.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Akka.Interfaced-SlimClient.Templates-Protobuf.0.2.0-alpha4\build\Akka.Interfaced-SlimClient.Templates-Protobuf.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Akka.Interfaced-SlimClient.Templates-Protobuf.0.2.0-alpha4\build\Akka.Interfaced-SlimClient.Templates-Protobuf.props'))" />
+    <Error Condition="!Exists('..\..\packages\Akka.Interfaced-SlimClient.Templates-Protobuf.0.2.0-alpha4\build\Akka.Interfaced-SlimClient.Templates-Protobuf.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Akka.Interfaced-SlimClient.Templates-Protobuf.0.2.0-alpha4\build\Akka.Interfaced-SlimClient.Templates-Protobuf.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\EntityNetwork.Templates.0.2.0-alpha1\build\EntityNetwork.Templates.targets" Condition="Exists('..\..\packages\EntityNetwork.Templates.0.2.0-alpha1\build\EntityNetwork.Templates.targets')" />
+  <Import Project="..\..\packages\TrackableData.Templates.0.2.0-alpha3\build\TrackableData.Templates.targets" Condition="Exists('..\..\packages\TrackableData.Templates.0.2.0-alpha3\build\TrackableData.Templates.targets')" />
+  <Import Project="..\..\packages\Akka.Interfaced-SlimClient.Templates-Protobuf.0.2.0-alpha4\build\Akka.Interfaced-SlimClient.Templates-Protobuf.targets" Condition="Exists('..\..\packages\Akka.Interfaced-SlimClient.Templates-Protobuf.0.2.0-alpha4\build\Akka.Interfaced-SlimClient.Templates-Protobuf.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>"$(ProtobufNetPrecompileExe)" "$(TargetPath)" -o:Domain.ProtobufSerializer.dll -t:DomainProtobufSerializer "-f:.NETFramework\v3.5\Profile\Unity Subset v3.5" -autosurrogate
+COPY /Y "$(TargetDir)Domain.ProtobufSerializer.dll" "$(ProjectDir)..\GameClient\Assets\Scripts"
+COPY /Y "$(TargetPath)" "$(ProjectDir)..\GameClient\Assets\Scripts"
+</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

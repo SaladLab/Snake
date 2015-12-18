@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Domain\Domain.csproj", "{44EBCE90-AABA-4704-BEAC-66C59BFF179D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{D7FF9AE4-46C2-4964-AEF6-1D39A2F83ED6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Tests", "src\Domain.Tests\Domain.Tests.csproj", "{782675C3-8B78-403E-AC9D-67C06CEF1E3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Unity3D", "src\Domain.Unity3D\Domain.Unity3D.csproj", "{1277B90D-BDD2-438C-A57B-B47349D2D928}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameServer", "GameServer", "{D98E99A6-A932-4118-BA70-D88D9938E4BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameServer", "src\GameServer\GameServer.csproj", "{9FC7C16A-68C3-40DE-AE75-1267472DBD08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameServer.Tests", "src\GameServer.Tests\GameServer.Tests.csproj", "{B60AD684-2171-4261-92DF-542D2481F758}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameServer-Console", "src\GameServer-Console\GameServer-Console.csproj", "{6DACA9D6-88F0-4849-A1E4-7AA622A7C04D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{44EBCE90-AABA-4704-BEAC-66C59BFF179D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44EBCE90-AABA-4704-BEAC-66C59BFF179D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44EBCE90-AABA-4704-BEAC-66C59BFF179D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44EBCE90-AABA-4704-BEAC-66C59BFF179D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{782675C3-8B78-403E-AC9D-67C06CEF1E3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{782675C3-8B78-403E-AC9D-67C06CEF1E3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{782675C3-8B78-403E-AC9D-67C06CEF1E3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{782675C3-8B78-403E-AC9D-67C06CEF1E3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1277B90D-BDD2-438C-A57B-B47349D2D928}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1277B90D-BDD2-438C-A57B-B47349D2D928}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1277B90D-BDD2-438C-A57B-B47349D2D928}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1277B90D-BDD2-438C-A57B-B47349D2D928}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FC7C16A-68C3-40DE-AE75-1267472DBD08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FC7C16A-68C3-40DE-AE75-1267472DBD08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FC7C16A-68C3-40DE-AE75-1267472DBD08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FC7C16A-68C3-40DE-AE75-1267472DBD08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B60AD684-2171-4261-92DF-542D2481F758}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B60AD684-2171-4261-92DF-542D2481F758}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B60AD684-2171-4261-92DF-542D2481F758}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B60AD684-2171-4261-92DF-542D2481F758}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DACA9D6-88F0-4849-A1E4-7AA622A7C04D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DACA9D6-88F0-4849-A1E4-7AA622A7C04D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DACA9D6-88F0-4849-A1E4-7AA622A7C04D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DACA9D6-88F0-4849-A1E4-7AA622A7C04D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{44EBCE90-AABA-4704-BEAC-66C59BFF179D} = {D7FF9AE4-46C2-4964-AEF6-1D39A2F83ED6}
+		{782675C3-8B78-403E-AC9D-67C06CEF1E3E} = {D7FF9AE4-46C2-4964-AEF6-1D39A2F83ED6}
+		{1277B90D-BDD2-438C-A57B-B47349D2D928} = {D7FF9AE4-46C2-4964-AEF6-1D39A2F83ED6}
+		{9FC7C16A-68C3-40DE-AE75-1267472DBD08} = {D98E99A6-A932-4118-BA70-D88D9938E4BA}
+		{B60AD684-2171-4261-92DF-542D2481F758} = {D98E99A6-A932-4118-BA70-D88D9938E4BA}
+		{6DACA9D6-88F0-4849-A1E4-7AA622A7C04D} = {D98E99A6-A932-4118-BA70-D88D9938E4BA}
+	EndGlobalSection
+EndGlobal
