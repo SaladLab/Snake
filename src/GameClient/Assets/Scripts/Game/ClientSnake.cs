@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Linq;
 using Domain;
 using EntityNetwork;
 using TrackableData;
@@ -120,7 +121,7 @@ public class ClientSnake : SnakeClientBase, ISnakeClientHandler
                 }
                 else if (_useAi)
                 {
-                    var orient = SnakeAi.Think(_posX, _posY, _orientX, _orientY);
+                    var orient = SnakeAi.Think(Zone, _posX, _posY, _orientX, _orientY);
                     _orientX = orient.Item1;
                     _orientY = orient.Item2;
                 }
@@ -162,5 +163,10 @@ public class ClientSnake : SnakeClientBase, ISnakeClientHandler
     {
         if (ScoreText != null)
             ScoreText.text = Data.Score.ToString();
+    }
+
+    public bool IsOnPart(int x, int y)
+    {
+        return _parts.Any(part => part.X == x && part.Y == y);
     }
 }
