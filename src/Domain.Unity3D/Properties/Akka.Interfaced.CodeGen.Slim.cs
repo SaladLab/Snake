@@ -425,9 +425,11 @@ namespace Domain
         [ProtoContract, TypeAlias]
         public class End_Invoke : IInvokable
         {
+            [ProtoMember(1)] public System.Int32 winnerId;
+
             public void Invoke(object target)
             {
-                ((IGameObserver)target).End();
+                ((IGameObserver)target).End(winnerId);
             }
         }
 

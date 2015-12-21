@@ -482,7 +482,7 @@ namespace Domain
         {
             public static readonly PropertyInfo State = typeof(IZoneControllerData).GetProperty("State");
             public static readonly PropertyInfo StartTime = typeof(IZoneControllerData).GetProperty("StartTime");
-            public static readonly PropertyInfo Winner = typeof(IZoneControllerData).GetProperty("Winner");
+            public static readonly PropertyInfo WinnerId = typeof(IZoneControllerData).GetProperty("WinnerId");
         }
 
         private ZoneState _State;
@@ -517,19 +517,19 @@ namespace Domain
             }
         }
 
-        private int _Winner;
+        private int _WinnerId;
 
-        [ProtoMember(3)] public int Winner
+        [ProtoMember(3)] public int WinnerId
         {
             get
             {
-                return _Winner;
+                return _WinnerId;
             }
             set
             {
-                if (Tracker != null && Winner != value)
-                    Tracker.TrackSet(PropertyTable.Winner, _Winner, value);
-                _Winner = value;
+                if (Tracker != null && WinnerId != value)
+                    Tracker.TrackSet(PropertyTable.WinnerId, _WinnerId, value);
+                _WinnerId = value;
             }
         }
     }
@@ -539,7 +539,7 @@ namespace Domain
     {
         [ProtoMember(1)] public EnvelopedObject<ZoneState> State;
         [ProtoMember(2)] public EnvelopedObject<TimeSpan> StartTime;
-        [ProtoMember(3)] public EnvelopedObject<int> Winner;
+        [ProtoMember(3)] public EnvelopedObject<int> WinnerId;
 
         public static implicit operator TrackableZoneControllerDataTrackerSurrogate(TrackablePocoTracker<IZoneControllerData> tracker)
         {
@@ -557,8 +557,8 @@ namespace Domain
                     case "StartTime":
                         surrogate.StartTime = new EnvelopedObject<TimeSpan> { Value = (TimeSpan)changeItem.Value.NewValue };
                         break;
-                    case "Winner":
-                        surrogate.Winner = new EnvelopedObject<int> { Value = (int)changeItem.Value.NewValue };
+                    case "WinnerId":
+                        surrogate.WinnerId = new EnvelopedObject<int> { Value = (int)changeItem.Value.NewValue };
                         break;
                 }
             }
@@ -575,8 +575,8 @@ namespace Domain
                 tracker.ChangeMap.Add(TrackableZoneControllerData.PropertyTable.State, new TrackablePocoTracker<IZoneControllerData>.Change { NewValue = surrogate.State.Value });
             if (surrogate.StartTime != null)
                 tracker.ChangeMap.Add(TrackableZoneControllerData.PropertyTable.StartTime, new TrackablePocoTracker<IZoneControllerData>.Change { NewValue = surrogate.StartTime.Value });
-            if (surrogate.Winner != null)
-                tracker.ChangeMap.Add(TrackableZoneControllerData.PropertyTable.Winner, new TrackablePocoTracker<IZoneControllerData>.Change { NewValue = surrogate.Winner.Value });
+            if (surrogate.WinnerId != null)
+                tracker.ChangeMap.Add(TrackableZoneControllerData.PropertyTable.WinnerId, new TrackablePocoTracker<IZoneControllerData>.Change { NewValue = surrogate.WinnerId.Value });
             return tracker;
         }
     }

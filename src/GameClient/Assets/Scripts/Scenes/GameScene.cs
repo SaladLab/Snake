@@ -2,10 +2,12 @@
 using System.Collections;
 using System.Linq;
 using Akka.Interfaced.SlimSocket.Client;
+using DG.Tweening;
 using Domain;
 using EntityNetwork;
 using TypeAlias;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IByteChannel
@@ -15,6 +17,8 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
 
     public Text LoadingText;
     public Transform GameEntityRoot;
+    public RectTransform ResultBox;
+    public Text ResultText;
 
     private Tuple<long, string> _pairedGame;
     private int _gameObserverId;
@@ -119,7 +123,7 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
             yield return G.User.UnregisterPairing().WaitHandle;
             var box = UiMessageBox.ShowMessageBox("Cannot find game");
             yield return StartCoroutine(box.WaitForHide());
-            Application.LoadLevel("MainScene");
+            SceneManager.LoadScene("MainScene");
             yield break;
         }
 
@@ -192,16 +196,16 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
         BeginGame();
     }
 
-    void IGameObserver.End()
+    void IGameObserver.End(int winnerId)
     {
-        Debug.Log(string.Format("IGameObserver.End"));
-        EndGame();
+        Debug.Log(string.Format("IGameObserver.End {0}", winnerId));
+        EndGame(winnerId);
     }
 
     void IGameObserver.Abort()
     {
         Debug.Log(string.Format("IGameObserver.Abort"));
-        EndGame();
+        EndGame(-1);
     }
 
     void IByteChannel.Write(byte[] bytes)
@@ -213,9 +217,44 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
     {
         LoadingPanel.gameObject.SetActive(false);
         GamePanel.gameObject.SetActive(true);
+        ResultBox.gameObject.SetActive(false);
     }
 
-    private void EndGame()
+    private void EndGame(int winnerId)
     {
+        ResultBox.gameObject.SetActive(true);
+        var ap = ResultBox.anchoredPosition;
+        ResultBox.anchoredPosition = new Vector2(ap.x, ap.y - 200);
+        ResultBox.DOAnchorPosY(ap.y, 0.5f).SetEase(Ease.OutBounce).SetDelay(0);
+
+        if (winnerId == 0)
+        {
+            ResultText.text = "Draw";
+        }
+        else if (winnerId == -1)
+        {
+            ResultText.text = "Abort";
+        }
+        else
+        {
+            var snake = (ClientSnake)_zone.GetEntity(winnerId);
+            if (snake == null)
+                ResultText.text = "?";
+            else if (snake.IsControllable)
+                ResultText.text = "WIN";
+            else
+                ResultText.text = "LOSE";
+        }
+    }
+
+    public void OnLeaveButtonClick()
+    {
+        if (_gameInfo != null)
+        {
+            G.User.LeaveGame(_gameInfo.Id);
+            G.Comm.RemoveObserver(_gameObserverId);
+        }
+
+        SceneManager.LoadScene("MainScene");
     }
 }

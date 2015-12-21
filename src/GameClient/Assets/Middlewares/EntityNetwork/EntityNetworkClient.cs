@@ -96,7 +96,7 @@ public class EntityNetworkClient : NetworkBehaviour
 
         EntityNetworkManager.Instance.Zone.RunAction(zone =>
         {
-            var controller = (ServerZoneController)zone.Spawn(typeof(IZoneController), 0, EntityFlags.Singleton);
+            var controller = (ServerZoneController)zone.Spawn(typeof(IZoneController), 0);
             controller.Start(_clientId, _clientId);
         });
     }

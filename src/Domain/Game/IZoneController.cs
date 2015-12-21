@@ -14,7 +14,7 @@ namespace Domain
         Stopped,
     }
 
-    [TypeAlias]
+    [TypeAlias, Singleton]
     public interface IZoneController : IEntityPrototype
     {
         IZoneControllerData Data { get; }
@@ -25,6 +25,6 @@ namespace Domain
     {
         [ProtoMember(1)] ZoneState State { get; set; }
         [ProtoMember(2)] TimeSpan StartTime { get; set; }
-        [ProtoMember(3)] int Winner { get; set; }
+        [ProtoMember(3)] int WinnerId { get; set; }
     }
 }

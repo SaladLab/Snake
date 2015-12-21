@@ -9,7 +9,7 @@ namespace Domain
         void Leave(long userId);
         void ZoneMessage(byte[] bytes);
         void Begin();
-        void End();
+        void End(int winnerId);
         void Abort();
     }
 }

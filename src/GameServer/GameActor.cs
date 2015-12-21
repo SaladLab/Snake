@@ -156,12 +156,10 @@ namespace GameServer
 
             _zone.RunAction(zone =>
             {
-                _zoneController = (ServerZoneController)zone.Spawn(typeof(IZoneController), 0, EntityFlags.Singleton);
+                _zoneController = (ServerZoneController)zone.Spawn(typeof(IZoneController), 0);
                 _zoneController.Start(1, _clients.Count);
                 _zoneController.StateChanged = OnZoneStateChange;
             });
-
-            // TODO: How to know game over
         }
 
         private void OnZoneStateChange(ServerZoneController zoneController, ZoneState state)
@@ -171,7 +169,7 @@ namespace GameServer
                 if (_state == GameState.Playing)
                 {
                     _state = GameState.Ended;
-                    NotifyToAllObservers((id, o) => o.End());
+                    NotifyToAllObservers((id, o) => o.End(zoneController.Data.WinnerId));
                 }
             }
         }

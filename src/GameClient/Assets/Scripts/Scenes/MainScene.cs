@@ -3,6 +3,7 @@ using Akka.Interfaced;
 using DG.Tweening;
 using Domain;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainScene : MonoBehaviour
@@ -98,7 +99,7 @@ public class MainScene : MonoBehaviour
             return;
         }
 
-        Application.LoadLevel("GameScene");
+        SceneManager.LoadScene("GameScene");
     }
 
     public void OnDifficultyButtonClick()

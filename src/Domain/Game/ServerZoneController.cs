@@ -87,17 +87,17 @@ namespace Domain
             if (Data.State != ZoneState.Playing)
                 return;
 
-            SetState(ZoneState.Stopped);
             if (snake == _snakes[0])
-            {
-                _snakes[1].MakeDead();
-                Data.Winner = 2;
-            }
+                Data.WinnerId = _snakes[1].Id;
             if (snake == _snakes[1])
-            {
+                Data.WinnerId = _snakes[0].Id;
+
+            SetState(ZoneState.Stopped);
+
+            if (snake == _snakes[0])
+                _snakes[1].MakeDead();
+            if (snake == _snakes[1])
                 _snakes[0].MakeDead();
-                Data.Winner = 1;
-            }
         }
 
         private void SpawnFruit()
@@ -125,6 +125,9 @@ namespace Domain
 
         private void OnFruitSpawnTimer(IEntity entity, int timerId)
         {
+            if (Data.State != ZoneState.Playing)
+                return;
+
             SpawnFruit();
         }
     }
