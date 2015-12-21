@@ -10,10 +10,6 @@ public class GameTestScene : MonoBehaviour
     {
         ClientEntityFactory.Default.RootTransform = GameEntityRoot;
 
-        var typeTable = new TypeAliasTable();
-        EntityNetworkManager.TypeTable = typeTable;
-        EntityNetworkManager.ProtobufTypeModel = new DomainProtobufSerializer();
-
         ApplicationComponent.TryInit();
         UiManager.Initialize();
     }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using Domain;
 using EntityNetwork;
 using UnityEngine;
@@ -40,15 +37,15 @@ public class EntityNetworkClient : NetworkBehaviour
 
         var channel = new ProtobufChannelToServerZoneOutbound();
         channel.OutboundChannel = new EntityNetworkChannelToServerZone { NetworkClient = this };
-        channel.TypeTable = EntityNetworkManager.TypeTable;
-        channel.TypeModel = EntityNetworkManager.ProtobufTypeModel;
+        channel.TypeTable = EntityNetworkManager.TypeAliasTable;
+        channel.TypeModel = EntityNetworkManager.TypeModel;
 
         _clientId = (int)netId.Value;
         _zone = new ClientZone(ClientEntityFactory.Default, channel);
         _zoneChannel = new ProtobufChannelToClientZoneInbound
         {
-            TypeTable = EntityNetworkManager.TypeTable,
-            TypeModel = EntityNetworkManager.ProtobufTypeModel,
+            TypeTable = EntityNetworkManager.TypeAliasTable,
+            TypeModel = EntityNetworkManager.TypeModel,
             InboundClientZone = _zone
         };
 
@@ -73,7 +70,7 @@ public class EntityNetworkClient : NetworkBehaviour
         if (hasAuthority == false)
             return;
 
-        Debug.LogFormat("RpcAddClientToZoneDone({0})", added);
+        Debug.LogFormat("EntityNetworkClient({0}).RpcAddClientToZoneDone({1})", _clientId, added);
         if (added)
         {
             CmdAddClientToZoneDone();
@@ -90,15 +87,7 @@ public class EntityNetworkClient : NetworkBehaviour
     [Command]
     public void CmdAddClientToZoneDone()
     {
-        Debug.LogFormat("CmdAddClientToZoneDone({0})", _clientId);
-
-        // TODO: Decouple this
-
-        EntityNetworkManager.Instance.Zone.RunAction(zone =>
-        {
-            var controller = (ServerZoneController)zone.Spawn(typeof(IZoneController), 0);
-            controller.Start(_clientId, _clientId);
-        });
+        Debug.LogFormat("EntityNetworkClient({0}).CmdAddClientToZoneDone", _clientId);
     }
 
     // Zone Channel
@@ -126,6 +115,6 @@ public class EntityNetworkClient : NetworkBehaviour
 
     public override void OnNetworkDestroy()
     {
-        Debug.LogFormat("OnNetworkDestroy()");
+        Debug.LogFormat("EntityNetworkClient({0}).OnNetworkDestroy", _clientId);
     }
 }
