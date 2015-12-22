@@ -56,10 +56,29 @@ public abstract class EntityNetworkManager : NetworkManager
 
         if (_zone != null)
         {
-            OnZoneStart(_zone);
+            OnZoneStop(_zone);
 
             _zone = null;
             _zoneChannelMap = null;
+        }
+    }
+
+    public override void OnStartClient(NetworkClient client)
+    {
+        Debug.Log("EntityNetworkManager.OnStartClient");
+    }
+
+    public override void OnStopClient()
+    {
+        Debug.Log("EntityNetworkManager.OnStopClient");
+
+        // Remove all client entity objects
+
+        var t = ClientEntityFactory.Default.RootTransform;
+        if (t != null)
+        {
+            for (var i = t.childCount - 1; i >= 0; i--)
+                Destroy(t.GetChild(i).gameObject);
         }
     }
 
