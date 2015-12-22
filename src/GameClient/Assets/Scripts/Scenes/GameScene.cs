@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
 using Akka.Interfaced.SlimSocket.Client;
 using DG.Tweening;
 using Domain;
@@ -55,8 +54,8 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
         GamePanel.gameObject.SetActive(false);
 
         StartCoroutine(G.User == null
-            ? ProcessLoginAndJoinGame()
-            : ProcessJoinGame());
+                           ? ProcessLoginAndJoinGame()
+                           : ProcessJoinGame());
     }
 
     private IEnumerator ProcessLoginAndJoinGame()

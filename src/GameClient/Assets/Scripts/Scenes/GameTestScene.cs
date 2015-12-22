@@ -1,5 +1,4 @@
-﻿using TypeAlias;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameTestScene : MonoBehaviour
 {
