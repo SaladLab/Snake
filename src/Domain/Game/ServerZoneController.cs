@@ -20,13 +20,13 @@ namespace Domain
             StateChanged?.Invoke(this, state);
         }
 
-        public void Start(int clientId1, int clientId2)
+        public void Start(int clientId1, int clientId2, bool useAi1, bool useAi2)
         {
             if (Data.State != ZoneState.None)
                 throw new InvalidOperationException("State should be None. but " + Data.State);
 
             SetState(ZoneState.Ready);
-            SpawnSnakes(clientId1, clientId2);
+            SpawnSnakes(clientId1, clientId2, useAi1, useAi2);
 
             SetTimerOnce(1, TimeSpan.FromSeconds(1), (e, t) =>
             {
@@ -51,7 +51,7 @@ namespace Domain
                 snake.MakeDead();
         }
 
-        private void SpawnSnakes(int clientId1, int clientId2)
+        private void SpawnSnakes(int clientId1, int clientId2, bool useAi1, bool useAi2)
         {
             var x1 = Rule.BoardWidth / 2;
             var x2 = Rule.BoardWidth / 2 + 1;
@@ -66,7 +66,8 @@ namespace Domain
                     {
                         Tuple.Create(x1, y1),
                         Tuple.Create(x2, y1)
-                    }
+                    },
+                    UseAi = useAi1,
                 });
 
             _snakes[1] = (ServerSnake)Zone.Spawn(
@@ -78,7 +79,7 @@ namespace Domain
                         Tuple.Create(x2, y2),
                         Tuple.Create(x1, y2)
                     },
-                    UseAi = clientId1 == clientId2,
+                    UseAi = useAi2,
                 });
         }
 

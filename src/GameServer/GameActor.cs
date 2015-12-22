@@ -157,7 +157,7 @@ namespace GameServer
             _zone.RunAction(zone =>
             {
                 _zoneController = (ServerZoneController)zone.Spawn(typeof(IZoneController), 0);
-                _zoneController.Start(1, _clients.Count);
+                _zoneController.Start(1, _clients.Count, false, _clients.Count == 1);
                 _zoneController.StateChanged = OnZoneStateChange;
             });
         }

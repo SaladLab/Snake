@@ -35,13 +35,13 @@ public class SelfHostEntityNetworkManager : EntityNetworkManager
             {
                 if (UseAi)
                 {
-                    controller.Start(clientId, clientId);
+                    controller.Start(clientId, clientId, false, true);
                 }
                 else
                 {
                     var clientIds = zone.GetClientIds().ToList();
                     if (clientIds.Count == 2)
-                        controller.Start(clientIds[0], clientIds[1]); 
+                        controller.Start(clientIds[0], clientIds[1], false, false); 
                 }
             }
         });
