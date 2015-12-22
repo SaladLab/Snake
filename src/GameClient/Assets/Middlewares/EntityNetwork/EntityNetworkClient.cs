@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Domain;
 using EntityNetwork;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -13,7 +12,10 @@ public class EntityNetworkClient : NetworkBehaviour
     private ClientZone _zone;
     private ProtobufChannelToClientZoneInbound _zoneChannel;
 
-    public int ClientId { get { return _clientId; } }
+    public int ClientId
+    {
+        get { return _clientId; }
+    }
 
     // Registration
 
@@ -31,21 +33,25 @@ public class EntityNetworkClient : NetworkBehaviour
 
     private IEnumerator AddClientToZone()
     {
+        // By OnStartClient's note
         yield return null;
+
         if (hasAuthority == false)
             yield break;
 
-        var channel = new ProtobufChannelToServerZoneOutbound();
-        channel.OutboundChannel = new EntityNetworkChannelToServerZone { NetworkClient = this };
-        channel.TypeTable = EntityNetworkManager.TypeAliasTable;
-        channel.TypeModel = EntityNetworkManager.TypeModel;
+        var channel = new ProtobufChannelToServerZoneOutbound
+        {
+            OutboundChannel = new EntityNetworkChannelToServerZone { NetworkClient = this },
+            TypeTable = EntityNetworkManager.Instance.GetTypeAliasTable(),
+            TypeModel = EntityNetworkManager.Instance.GetTypeModel()
+        };
 
         _clientId = (int)netId.Value;
-        _zone = new ClientZone(ClientEntityFactory.Default, channel);
+        _zone = new ClientZone(EntityNetworkManager.Instance.GetClientEntityFactory(), channel);
         _zoneChannel = new ProtobufChannelToClientZoneInbound
         {
-            TypeTable = EntityNetworkManager.TypeAliasTable,
-            TypeModel = EntityNetworkManager.TypeModel,
+            TypeTable = EntityNetworkManager.Instance.GetTypeAliasTable(),
+            TypeModel = EntityNetworkManager.Instance.GetTypeModel(),
             InboundClientZone = _zone
         };
 

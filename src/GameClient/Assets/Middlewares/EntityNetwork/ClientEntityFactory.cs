@@ -48,7 +48,7 @@ public class ClientEntityFactory : IClientEntityFactory
         if (resource == null)
             throw new InvalidOperationException("Failed to load resource(" + resourceName + ")");
 
-        var go = (GameObject)GameObject.Instantiate(resource);
+        var go = (GameObject)UnityEngine.Object.Instantiate(resource);
         if (go == null)
             throw new InvalidOperationException("Failed to instantiate resource(" + resourceName + ")");
 
@@ -61,6 +61,6 @@ public class ClientEntityFactory : IClientEntityFactory
     void IClientEntityFactory.Delete(IClientEntity entity)
     {
         var enb = ((EntityNetworkBehaviour)entity);
-        GameObject.Destroy(enb.gameObject);
+        UnityEngine.Object.Destroy(enb.gameObject);
     }
 }

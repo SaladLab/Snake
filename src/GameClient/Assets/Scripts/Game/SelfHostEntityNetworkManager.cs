@@ -4,14 +4,17 @@ using TypeAlias;
 
 public class SelfHostEntityNetworkManager : EntityNetworkManager
 {
-    protected override TypeAliasTable GetTypeAliasTable()
+    private static TypeAliasTable _typeAliasTable;
+    private static TypeModel _typeModel;
+
+    public override TypeAliasTable GetTypeAliasTable()
     {
-        return new TypeAliasTable();
+        return _typeAliasTable ?? (_typeAliasTable = new TypeAliasTable());
     }
 
-    protected override TypeModel GetTypeModel()
+    public override TypeModel GetTypeModel()
     {
-        return new DomainProtobufSerializer();
+        return _typeModel ?? (_typeModel = new DomainProtobufSerializer());
     }
 
     protected override void OnClientAdd(int clientId)

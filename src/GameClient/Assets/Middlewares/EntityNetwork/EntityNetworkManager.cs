@@ -8,22 +8,31 @@ using UnityEngine.Networking;
 public abstract class EntityNetworkManager : NetworkManager
 {
     public static EntityNetworkManager Instance;
-    public static TypeAliasTable TypeAliasTable;
-    public static TypeModel TypeModel;
 
     private ServerZone _zone;
     private Dictionary<int, ProtobufChannelToServerZoneInbound> _zoneChannelMap;
 
-    public ServerZone Zone { get { return _zone; } }
+    public ServerZone Zone
+    {
+        get { return _zone; }
+    }
 
-    protected abstract TypeAliasTable GetTypeAliasTable();
-    protected abstract TypeModel GetTypeModel();
+    public abstract TypeAliasTable GetTypeAliasTable();
+    public abstract TypeModel GetTypeModel();
 
-    void Awake()
+    public virtual IServerEntityFactory GetServerEntityFactory()
+    {
+        return EntityFactory.Default;
+    }
+
+    public virtual IClientEntityFactory GetClientEntityFactory()
+    {
+        return ClientEntityFactory.Default;
+    }
+
+    private void Awake()
     {
         Instance = this;
-        TypeAliasTable = GetTypeAliasTable();
-        TypeModel = GetTypeModel();
     }
 
     public override void OnStartServer()
@@ -58,17 +67,17 @@ public abstract class EntityNetworkManager : NetworkManager
     {
         var channelDown = new ProtobufChannelToClientZoneOutbound()
         {
-            OutboundChannel = new EntityNetworkChannelToClientZone {NetworkClient = networkClient},
-            TypeTable = TypeAliasTable,
-            TypeModel = TypeModel,
+            OutboundChannel = new EntityNetworkChannelToClientZone { NetworkClient = networkClient },
+            TypeTable = GetTypeAliasTable(),
+            TypeModel = GetTypeModel(),
         };
         if (_zone.AddClient(clientId, channelDown) == false)
             return false;
 
         var channelUp = new ProtobufChannelToServerZoneInbound
         {
-            TypeTable = TypeAliasTable,
-            TypeModel = TypeModel,
+            TypeTable = GetTypeAliasTable(),
+            TypeModel = GetTypeModel(),
             ClientId = clientId,
             InboundServerZone = _zone
         };
@@ -103,13 +112,10 @@ public abstract class EntityNetworkManager : NetworkManager
 
     private void Update()
     {
-        if (_zone != null)
-        {
-            _zone.RunAction(z =>
-            {
-                ((EntityTimerProvider)z.TimerProvider).ProcessWork();
-            });
-        }
+        if (_zone == null)
+            return;
+
+        _zone.RunAction(z => { ((EntityTimerProvider)z.TimerProvider).ProcessWork(); });
     }
 
     protected virtual void OnZoneStart(IServerZone zone)
@@ -130,12 +136,10 @@ public abstract class EntityNetworkManager : NetworkManager
 
     protected virtual void OnEntitySpawn(IServerEntity entity)
     {
-        Debug.LogFormat("OnEntitySpawn({0})", entity.Id);
     }
 
     protected virtual void OnEntityDespawn(IServerEntity entity)
     {
-        Debug.LogFormat("OnEntityDespawn({0})", entity.Id);
     }
 
     protected virtual void OnEntityInvalidTargetInvoke(int clientId, int entityId, IInvokePayload payload)
@@ -145,6 +149,7 @@ public abstract class EntityNetworkManager : NetworkManager
 
     protected virtual void OnEntityInvalidOwnershipInvoke(int clientId, IServerEntity entity, IInvokePayload payload)
     {
-        Debug.LogWarningFormat("OnEntityInvalidOwnershipInvoke({0}, {1}, {2}, {3})", clientId, entity.Id, entity.OwnerId, payload.GetType().Name);
+        Debug.LogWarningFormat("OnEntityInvalidOwnershipInvoke({0}, {1}, {2}, {3})", clientId, entity.Id, entity.OwnerId,
+                               payload.GetType().Name);
     }
 }
