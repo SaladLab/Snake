@@ -9,3 +9,5 @@ EditorBuildSettings:
     path: Assets/Scenes/MainScene.unity
   - enabled: 1
     path: Assets/Scenes/GameScene.unity
+  - enabled: 1
+    path: Assets/Scenes/GameTestScene.unity

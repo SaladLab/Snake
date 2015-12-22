@@ -1,9 +1,15 @@
-﻿using Domain;
+﻿using System;
+using Domain;
+using EntityNetwork;
 using ProtoBuf.Meta;
 using TypeAlias;
+using System.Linq;
+using UnityEngine;
 
 public class SelfHostEntityNetworkManager : EntityNetworkManager
 {
+    public bool UseAi;
+
     private static TypeAliasTable _typeAliasTable;
     private static TypeModel _typeModel;
 
@@ -21,8 +27,29 @@ public class SelfHostEntityNetworkManager : EntityNetworkManager
     {
         Zone.RunAction(zone =>
         {
-            var controller = (ServerZoneController)zone.Spawn(typeof(IZoneController), 0);
-            controller.Start(clientId, clientId);
+            var controller = zone.GetEntity<ServerZoneController>();
+            if (controller == null)
+                controller = (ServerZoneController)zone.Spawn(typeof(IZoneController), 0);
+
+            if (controller.Data.State == ZoneState.None)
+            {
+                if (UseAi)
+                {
+                    controller.Start(clientId, clientId);
+                }
+                else
+                {
+                    var clientIds = zone.GetClientIds().ToList();
+                    if (clientIds.Count == 2)
+                        controller.Start(clientIds[0], clientIds[1]); 
+                }
+            }
         });
+    }
+
+    private void OnGUI()
+    {
+        if (isNetworkActive == false)
+            UseAi = GUI.Toggle(new Rect(230, 40, 200, 30), UseAi, "Use AI");
     }
 }

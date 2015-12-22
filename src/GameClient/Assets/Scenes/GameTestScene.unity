@@ -1655,6 +1655,7 @@ MonoBehaviour:
   matchMaker: {fileID: 0}
   matchName: default
   matchSize: 4
+  UseAi: 0
 --- !u!4 &1400423757
 Transform:
   m_ObjectHideFlags: 0
