@@ -45,6 +45,7 @@ public class MainScene : MonoBehaviour
             var loginServer = PlayerPrefs.GetString("LoginServer");
             var loginId = PlayerPrefs.GetString("LoginId");
             var loginPassword = PlayerPrefs.GetString("LoginPassword");
+
             if (string.IsNullOrEmpty(loginId) == false)
             {
                 ServerInput.text = loginServer;
@@ -57,7 +58,6 @@ public class MainScene : MonoBehaviour
     private IEnumerator ProcessLoginUser(string server, string id, string password)
     {
         G.Logger.Info("ProcessLoginUser");
-        SwitchPanel(LoginPanel, LoadingPanel);
 
         IPEndPoint endPoint;
         try
@@ -69,6 +69,8 @@ public class MainScene : MonoBehaviour
             UiMessageBox.ShowMessageBox("Server EndPoint Error: " + e);
             yield break;
         }
+
+        SwitchPanel(LoginPanel, LoadingPanel);
 
         var task = LoginProcessor.Login(endPoint, id, password, p => LoadingText.text = p + "...");
         yield return task.WaitHandle;
