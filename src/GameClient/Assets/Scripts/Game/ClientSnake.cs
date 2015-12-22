@@ -1,11 +1,11 @@
 ﻿using System;
-using UnityEngine;
-using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 using Domain;
 using EntityNetwork;
 using TrackableData;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class ClientSnake : SnakeClientBase, ISnakeClientHandler
 {
@@ -29,7 +29,10 @@ public class ClientSnake : SnakeClientBase, ISnakeClientHandler
     private float _moveTime;
     private readonly Queue<Tuple<int, int>> _inputQueue = new Queue<Tuple<int, int>>();
 
-    public bool IsControllable { get { return OwnerId == Zone.ClientId && !_useAi; } }
+    public bool IsControllable
+    {
+        get { return OwnerId == Zone.ClientId && !_useAi; }
+    }
 
     public override void OnSnapshot(SnakeSnapshot snapshot)
     {
@@ -116,8 +119,16 @@ public class ClientSnake : SnakeClientBase, ISnakeClientHandler
                 if (_inputQueue.Count > 0)
                 {
                     var orient = _inputQueue.Dequeue();
-                    _orientX = orient.Item1;
-                    _orientY = orient.Item2;
+                    if ((_orientX != 0 && _orientX == -orient.Item1) ||
+                        (_orientY != 0 && _orientY == -orient.Item2))
+                    {
+                        // ignore if an user try to turn head the opposite way.
+                    }
+                    else
+                    {
+                        _orientX = orient.Item1;
+                        _orientY = orient.Item2;
+                    }
                 }
                 else if (_useAi)
                 {
@@ -131,7 +142,6 @@ public class ClientSnake : SnakeClientBase, ISnakeClientHandler
 
                 ((ClientZone)Zone).RunAction(z => Move(_posX, _posY));
 
-                // TODO: If it hit the wall we need to stop here ?.
                 MoveParts();
 
                 _moveTime += (float)Rule.SnakeSpeed.TotalSeconds;
