@@ -60,10 +60,12 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
 
     private IEnumerator ProcessLoginAndJoinGame()
     {
+        var loginServer = PlayerPrefs.GetString("LoginServer");
         var loginId = PlayerPrefs.GetString("LoginId");
         var loginPassword = PlayerPrefs.GetString("LoginPassword");
 
         // TEST
+        loginServer = "";
         loginId = "editor";
         loginPassword = "1234";
 
@@ -73,7 +75,7 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
             yield break;
         }
 
-        yield return StartCoroutine(ProcessLoginUser(loginId, loginPassword));
+        yield return StartCoroutine(ProcessLoginUser(loginServer, loginId, loginPassword));
         if (G.User == null)
         {
             UiMessageBox.ShowMessageBox("Failed to login");
@@ -83,11 +85,12 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
         yield return StartCoroutine(ProcessJoinGame());
     }
 
-    private IEnumerator ProcessLoginUser(string id, string password)
+    private IEnumerator ProcessLoginUser(string server, string id, string password)
     {
         G.Logger.Info("ProcessLoginUser");
 
-        var task = LoginProcessor.Login(G.ServerEndPoint, id, password, null);
+        var endPoint = LoginProcessor.GetEndPointAddress(server);
+        var task = LoginProcessor.Login(endPoint, id, password, null);
         yield return task.WaitHandle;
     }
 
