@@ -39,7 +39,8 @@ namespace Domain
     [ProtoContract, TypeAlias]
     public class SnakeSnapshot
     {
-        [ProtoMember(1)] public List<Tuple<int, int>> Parts;
-        [ProtoMember(2)] public bool UseAi;
+        [ProtoMember(1)] public int PlayerId;
+        [ProtoMember(2)] public List<Tuple<int, int>> Parts;
+        [ProtoMember(3)] public bool UseAi;
     }
 }

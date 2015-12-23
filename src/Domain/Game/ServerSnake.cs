@@ -6,6 +6,7 @@ namespace Domain
 {
     public class ServerSnake : SnakeServerBase, ISnakeServerHandler
     {
+        public int PlayerId { get; private set; }
         public List<Tuple<int, int>> Parts { get; private set; }
         public bool UseAi { get; private set; }
 
@@ -13,6 +14,7 @@ namespace Domain
         {
             var snapshot = (SnakeSnapshot)param;
 
+            PlayerId = snapshot.PlayerId;
             Parts = snapshot.Parts;
             UseAi = snapshot.UseAi;
 
@@ -22,7 +24,7 @@ namespace Domain
 
         public override SnakeSnapshot OnSnapshot()
         {
-            return new SnakeSnapshot { Parts = Parts, UseAi = UseAi };
+            return new SnakeSnapshot { PlayerId= PlayerId, Parts = Parts, UseAi = UseAi };
         }
 
         void ISnakeServerHandler.OnMove(int x, int y)

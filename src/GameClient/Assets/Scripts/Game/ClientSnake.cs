@@ -20,6 +20,7 @@ public class ClientSnake : SnakeClientBase, ISnakeClientHandler
         public int Y;
     }
 
+    private int _playerId;
     private readonly List<Part> _parts = new List<Part>();
     private bool _useAi;
     private int _posX;
@@ -36,8 +37,10 @@ public class ClientSnake : SnakeClientBase, ISnakeClientHandler
 
     public override void OnSnapshot(SnakeSnapshot snapshot)
     {
-        _parts.Clear();
+        _playerId = snapshot.PlayerId;
+        _useAi = snapshot.UseAi;
 
+        _parts.Clear();
         foreach (var pos in snapshot.Parts)
         {
             var part = new Part
@@ -48,7 +51,16 @@ public class ClientSnake : SnakeClientBase, ISnakeClientHandler
             };
             part.Block.gameObject.SetActive(true);
             if (_parts.Count > 0)
+            {
                 part.Block.GetComponent<Image>().color = Color.gray;
+            }
+            else
+            {
+                part.Block.GetComponent<Image>().color = _playerId == 1
+                                                             ? new Color(0.5f, 1, 0.5f)
+                                                             : new Color(0.5f, 0.5f, 1);
+            }
+
             BoardPlacement.SetPosition(part.Block, part.X, part.Y);
             _parts.Add(part);
         }
@@ -57,8 +69,6 @@ public class ClientSnake : SnakeClientBase, ISnakeClientHandler
         _posY = _parts[0].Y;
         _orientX = _parts[0].X - _parts[1].X;
         _orientY = _parts[0].Y - _parts[1].Y;
-
-        _useAi = snapshot.UseAi;
     }
 
     public void OnMove(int x, int y)

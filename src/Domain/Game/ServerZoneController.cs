@@ -62,6 +62,7 @@ namespace Domain
                 typeof(ISnake), clientId1, EntityFlags.Normal,
                 new SnakeSnapshot
                 {
+                    PlayerId = 1,
                     Parts = new List<Tuple<int, int>>
                     {
                         Tuple.Create(x1, y1),
@@ -74,6 +75,7 @@ namespace Domain
                 typeof(ISnake), clientId2, EntityFlags.Normal,
                 new SnakeSnapshot
                 {
+                    PlayerId = 2,
                     Parts = new List<Tuple<int, int>>
                     {
                         Tuple.Create(x2, y2),
