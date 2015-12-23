@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class SnakeControlPad : MonoBehaviour
 {
@@ -24,22 +25,22 @@ public class SnakeControlPad : MonoBehaviour
         }
     }
 
-    public void OnLeftButtonClick()
+    public void OnLeftButtonDown()
     {
         OnInput(-1, 0);
     }
 
-    public void OnRightButtonClick()
+    public void OnRightButtonDown()
     {
         OnInput(1, 0);
     }
 
-    public void OnUpButtonClick()
+    public void OnUpButtonDown()
     {
         OnInput(0, 1);
     }
 
-    public void OnDownButtonClick()
+    public void OnDownButtonDown()
     {
         OnInput(0, -1);
     }
