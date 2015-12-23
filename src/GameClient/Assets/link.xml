@@ -27,5 +27,5 @@
     <type fullname="System.ComponentModel.UInt64Converter" preserve="all"/>
   </assembly>
   <assembly fullname="Domain.Unity3D" preserve="all"/>
-  <assembly fullname="Domain.ProtobufSerializer" preserve="all"/>
+  <assembly fullname="Domain.Unity3D.ProtobufSerializer" preserve="all"/>
 </linker>
