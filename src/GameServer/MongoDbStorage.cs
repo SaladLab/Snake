@@ -9,7 +9,7 @@ namespace GameServer
     {
         public static MongoDbStorage Instance { get; set; }
 
-        public MongoDbStorage(string connectionString, string databaseName = "TicTacToe")
+        public MongoDbStorage(string connectionString, string databaseName = "Snake")
         {
             Client = new MongoClient(connectionString);
             DatabaseName = databaseName;
