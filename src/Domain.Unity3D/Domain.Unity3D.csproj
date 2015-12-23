@@ -166,9 +166,9 @@
   <Import Project="..\..\packages\TrackableData.Templates.0.2.0-alpha3\build\TrackableData.Templates.targets" Condition="Exists('..\..\packages\TrackableData.Templates.0.2.0-alpha3\build\TrackableData.Templates.targets')" />
   <Import Project="..\..\packages\Akka.Interfaced-SlimClient.Templates-Protobuf.0.2.0-alpha4\build\Akka.Interfaced-SlimClient.Templates-Protobuf.targets" Condition="Exists('..\..\packages\Akka.Interfaced-SlimClient.Templates-Protobuf.0.2.0-alpha4\build\Akka.Interfaced-SlimClient.Templates-Protobuf.targets')" />
   <PropertyGroup>
-    <PostBuildEvent>"$(ProtobufNetPrecompileExe)" "$(TargetPath)" -o:Domain.ProtobufSerializer.dll -t:DomainProtobufSerializer "-f:.NETFramework\v3.5\Profile\Unity Subset v3.5" -autosurrogate
-COPY /Y "$(TargetDir)Domain.ProtobufSerializer.dll" "$(ProjectDir)..\GameClient\Assets\Scripts"
-COPY /Y "$(TargetPath)" "$(ProjectDir)..\GameClient\Assets\Scripts"
+    <PostBuildEvent>"$(ProtobufNetPrecompileExe)" "$(TargetPath)" -o:Domain.Unity3D.ProtobufSerializer.dll -t:DomainProtobufSerializer "-f:.NETFramework\v3.5\Profile\Unity Subset v3.5" -autosurrogate
+COPY /Y "$(TargetDir)Domain.Unity3D.ProtobufSerializer.dll" "$(SolutionDir)src\GameClient\Assets\Scripts"
+COPY /Y "$(TargetPath)" "$(SolutionDir)src\GameClient\Assets\Scripts"
 </PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\..\packages\EntityNetwork.Templates.0.2.0-alpha2\build\EntityNetwork.Templates.targets" Condition="Exists('..\..\packages\EntityNetwork.Templates.0.2.0-alpha2\build\EntityNetwork.Templates.targets')" />
