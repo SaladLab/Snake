@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Domain.Unity3D")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("SaladLab")]
 [assembly: AssemblyProduct("Domain.Unity3D")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("Copyright © 2016 SaladLab")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
