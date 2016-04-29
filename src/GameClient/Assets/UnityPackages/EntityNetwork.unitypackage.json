@@ -1,0 +1,130 @@
+{
+  "Id": "EntityNetwork",
+  "Version": "0.2.0",
+  "Authors": [
+    "Esun Kim"
+  ],
+  "Owners": [
+    "Esun Kim"
+  ],
+  "Description": "EntityNetwork",
+  "Dependencies": {
+    "NetLegacySupport": {
+      "Version": ">=1.1.0",
+      "Source": "github:SaladLab/NetLegacySupport"
+    },
+    "protobuf-net": {
+      "Version": "2.0.0.668",
+      "Source": "nuget:net20"
+    },
+    "TrackableData": {
+      "Version": ">=1.1.0",
+      "Source": "github:SaladLab/TrackableData"
+    }
+  },
+  "MergedDependencies": {
+    "NetLegacySupport": {
+      "Version": "1.1.0"
+    },
+    "protobuf-net": {
+      "Version": "2.0.0.668"
+    },
+    "TrackableData": {
+      "Version": "1.1.0"
+    },
+    "JsonNet": {
+      "Version": "8.0.3"
+    }
+  },
+  "Files": [
+    "Assets/UnityPackages/EntityNetwork/EntityNetwork.dll",
+    "Assets/UnityPackages/EntityNetwork/EntityNetwork.dll.mdb",
+    "Assets/UnityPackages/EntityNetwork/EntityNetwork.Unity3D.dll",
+    "Assets/UnityPackages/EntityNetwork/EntityNetwork.Unity3D.dll.mdb",
+    "Assets/UnityPackages/EntityNetwork/ClientEntityFactory.cs",
+    "Assets/UnityPackages/EntityNetwork/EntityNetworkChannel.cs",
+    "Assets/UnityPackages/EntityNetwork/EntityNetworkClient.cs",
+    "Assets/UnityPackages/EntityNetwork/EntityNetworkManager.cs",
+    "Assets/UnityPackages/EntityNetwork/EntityNetworkClient.prefab",
+    {
+      "Target": "Assets/UnityPackages/JsonNet.unitypackage.json",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/NetLegacySupport.unitypackage.json",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/protobuf-net.unitypackage.json",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/TrackableData.unitypackage.json",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/JsonNet/Newtonsoft.Json.dll.mdb",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/JsonNet/Newtonsoft.Json.dll",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/NetLegacySupport/NetLegacySupport.Action.dll.mdb",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/NetLegacySupport/NetLegacySupport.Action.dll",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/NetLegacySupport/NetLegacySupport.ConcurrentDictionary.dll.mdb",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/NetLegacySupport/NetLegacySupport.ConcurrentDictionary.dll",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/NetLegacySupport/NetLegacySupport.Tuple.dll.mdb",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/NetLegacySupport/NetLegacySupport.Tuple.dll",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/protobuf-net/protobuf-net.dll.mdb",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/protobuf-net/protobuf-net.dll",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/TrackableData/TrackableData.dll.mdb",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/TrackableData/TrackableData.dll",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/TrackableData/TrackableData.Json.dll.mdb",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/TrackableData/TrackableData.Json.dll",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/TrackableData/TrackableData.Protobuf.dll.mdb",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/TrackableData/TrackableData.Protobuf.dll",
+      "Merged": true
+    }
+  ]
+}
