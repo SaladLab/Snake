@@ -54,9 +54,9 @@ namespace Domain
         private void SpawnSnakes(int clientId1, int clientId2, bool useAi1, bool useAi2)
         {
             var x1 = Rule.BoardWidth / 2;
-            var x2 = Rule.BoardWidth / 2 + 1;
+            var x2 = (Rule.BoardWidth / 2) + 1;
             var y1 = Rule.BoardHeight / 4;
-            var y2 = Rule.BoardHeight * 3 / 4;
+            var y2 = (Rule.BoardHeight * 3) / 4;
 
             _snakes[0] = (ServerSnake)Zone.Spawn(
                 typeof(ISnake), clientId1, EntityFlags.Normal,

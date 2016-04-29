@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Domain;
-using EntityNetwork;
 using ProtoBuf.Meta;
 using TypeAlias;
-using System.Linq;
 using UnityEngine;
 
 public class SelfHostEntityNetworkManager : EntityNetworkManager
@@ -41,7 +40,7 @@ public class SelfHostEntityNetworkManager : EntityNetworkManager
                 {
                     var clientIds = zone.GetClientIds().ToList();
                     if (clientIds.Count == 2)
-                        controller.Start(clientIds[0], clientIds[1], false, false); 
+                        controller.Start(clientIds[0], clientIds[1], false, false);
                 }
             }
         });

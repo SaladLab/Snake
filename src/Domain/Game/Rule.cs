@@ -1,7 +1,7 @@
 using System;
 
 namespace Domain
-{    
+{
     public static class Rule
     {
         public static readonly int BoardWidth = 23;

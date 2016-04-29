@@ -51,7 +51,7 @@ namespace GameServer
 
         private class Schedule
         {
-        };
+        }
 
         [MessageHandler]
         private async Task OnSchedule(Schedule tick)
@@ -64,7 +64,7 @@ namespace GameServer
         }
 
         private async Task SchedulePairing(List<QueueEntity> pairingQueue)
-        { 
+        {
             // Pairing for two users
 
             while (pairingQueue.Count >= 2)
@@ -80,11 +80,14 @@ namespace GameServer
                 {
                     var ret = await _clusterContext.GameTable.Ask<DistributedActorTableMessage<long>.CreateReply>(
                         new DistributedActorTableMessage<long>.Create(
-                            new object[] { new CreateGameParam
+                            new object[]
                             {
-                                Difficulty = GameDifficulty.Normal,
-                                WithBot = false,
-                            } }));
+                                new CreateGameParam
+                                {
+                                    Difficulty = GameDifficulty.Normal,
+                                    WithBot = false,
+                                }
+                            }));
                     gameId = ret.Id;
                 }
                 catch (Exception e)
@@ -111,11 +114,14 @@ namespace GameServer
                     {
                         var ret = await _clusterContext.GameTable.Ask<DistributedActorTableMessage<long>.CreateReply>(
                             new DistributedActorTableMessage<long>.Create(
-                                new object[] { new CreateGameParam
+                                new object[]
                                 {
-                                    Difficulty = GameDifficulty.Normal,
-                                    WithBot = true,
-                                } }));
+                                    new CreateGameParam
+                                    {
+                                        Difficulty = GameDifficulty.Normal,
+                                        WithBot = true,
+                                    }
+                                }));
                         gameId = ret.Id;
                     }
                     catch (Exception e)

@@ -1,6 +1,6 @@
 ﻿using System;
-using ProtoBuf;
 using System.Collections.Generic;
+using ProtoBuf;
 
 namespace Domain
 {

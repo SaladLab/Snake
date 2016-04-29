@@ -24,7 +24,7 @@ namespace Domain
 
         public override SnakeSnapshot OnSnapshot()
         {
-            return new SnakeSnapshot { PlayerId= PlayerId, Parts = Parts, UseAi = UseAi };
+            return new SnakeSnapshot { PlayerId = PlayerId, Parts = Parts, UseAi = UseAi };
         }
 
         void ISnakeServerHandler.OnMove(int x, int y)
@@ -38,7 +38,6 @@ namespace Domain
                 Parts[i] = Parts[i - 1];
             }
             Parts[0] = Tuple.Create(x, y);
-            
 
             // Check hit wall
 

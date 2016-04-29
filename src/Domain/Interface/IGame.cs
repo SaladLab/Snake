@@ -8,7 +8,7 @@ namespace Domain
     {
         public GameDifficulty Difficulty;
         public bool WithBot;
-    };
+    }
 
     public interface IGame : IInterfacedActor
     {
