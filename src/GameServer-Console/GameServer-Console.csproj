@@ -35,16 +35,16 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Akka, Version=1.0.7.18, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Akka.1.0.7\lib\net45\Akka.dll</HintPath>
+    <Reference Include="Akka, Version=1.0.8.24, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Akka.1.0.8\lib\net45\Akka.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Akka.Cluster, Version=1.0.7.18, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Akka.Cluster.1.0.7.18-beta\lib\net45\Akka.Cluster.dll</HintPath>
+    <Reference Include="Akka.Cluster, Version=1.0.8.25, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Akka.Cluster.1.0.8.25-beta\lib\net45\Akka.Cluster.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Akka.Remote, Version=1.0.7.18, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Akka.Remote.1.0.7\lib\net45\Akka.Remote.dll</HintPath>
+    <Reference Include="Akka.Remote, Version=1.0.8.24, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Akka.Remote.1.0.8\lib\net45\Akka.Remote.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
