@@ -1,19 +1,19 @@
 {
   "dependencies": {
     "AkkaInterfacedSlimSocket": {
-      "version": ">=0.2.1",
+      "version": "0.2.*",
       "source": "github:SaladLab/Akka.Interfaced.SlimSocket"
     },
     "EntityNetwork": {
-      "version": ">=0.2.0",
+      "version": "0.2.*",
       "source": "github:SaladLab/EntityNetwork"
     },
     "TrackableData": {
-      "version": ">=1.1.0",
+      "version": "1.*",
       "source": "github:SaladLab/TrackableData"
     },
     "UiManager": {
-      "version": ">=1.0.0",
+      "version": "1.*",
       "source": "github:SaladLab/Unity3D.UiManager"
     }
   }

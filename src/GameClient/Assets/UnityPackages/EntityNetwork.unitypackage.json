@@ -10,7 +10,7 @@
   "Description": "EntityNetwork",
   "Dependencies": {
     "NetLegacySupport": {
-      "Version": ">=1.1.0",
+      "Version": "1.*",
       "Source": "github:SaladLab/NetLegacySupport"
     },
     "protobuf-net": {
@@ -18,7 +18,7 @@
       "Source": "nuget:net20"
     },
     "TrackableData": {
-      "Version": ">=1.1.0",
+      "Version": "1.*",
       "Source": "github:SaladLab/TrackableData"
     }
   },
