@@ -34,9 +34,3 @@ For testing gameplay itself, you can play game without server.
   - Open Scenes/GameTestScene and run.
   - For first client, select `Lan Host`.
   - For second client, select `Lan Client` with host address.
- 
-## Known issues
-
-#### Client cannot connect to GameServer sometimes
-
-Please retry to connect. It's caused by SlimSocket and will be fixed.
