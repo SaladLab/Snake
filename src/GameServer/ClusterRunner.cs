@@ -9,7 +9,6 @@ using Akka.Cluster;
 using Akka.Cluster.Utility;
 using Akka.Configuration;
 using Akka.Interfaced;
-using Akka.Interfaced.ProtobufSerializer;
 using Akka.Interfaced.SlimSocket.Base;
 using Akka.Interfaced.SlimSocket.Server;
 using Common.Logging;
@@ -227,7 +226,7 @@ namespace GameServer
             _context = context;
 
             var typeModel = TypeModel.Create();
-            AutoSurrogate.Register(typeModel);
+            Akka.Interfaced.SlimSocket.Base.AutoSurrogate.Register(typeModel);
             _tcpConnectionSettings = new TcpConnectionSettings
             {
                 PacketSerializer = new PacketSerializer(

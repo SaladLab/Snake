@@ -11,8 +11,8 @@ using Domain;
 
 namespace GameServer
 {
-    [Log]
-    public class GamePairMakerActor : InterfacedActor<GamePairMakerActor>, IExtendedInterface<IGamePairMaker>
+    [Log(LogFilterTarget.Request)]
+    public class GamePairMakerActor : InterfacedActor, IExtendedInterface<IGamePairMaker>
     {
         private readonly ILog _logger = LogManager.GetLogger("GamePairMaker");
         private readonly ClusterNodeContext _clusterContext;
@@ -42,7 +42,7 @@ namespace GameServer
                 _pairingQueues[i] = new List<QueueEntity>();
         }
 
-        protected override Task OnPreStart()
+        protected override Task OnStart(bool restarted)
         {
             Context.System.Scheduler.ScheduleTellRepeatedly(
                 TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), Self, new Schedule(), null);

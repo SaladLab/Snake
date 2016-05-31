@@ -14,7 +14,8 @@ using TrackableData.MongoDB;
 namespace GameServer
 {
     [Log]
-    public class UserLoginActor : InterfacedActor<UserLoginActor>, IUserLogin
+    [ResponsiveException(typeof(ResultException))]
+    public class UserLoginActor : InterfacedActor, IUserLogin
     {
         private readonly ILog _logger;
         private readonly ClusterNodeContext _clusterContext;
@@ -40,12 +41,14 @@ namespace GameServer
             public long UserId;
         }
 
-        async Task<LoginResult> IUserLogin.Login(string id, string password, int observerId)
+        async Task<LoginResult> IUserLogin.Login(string id, string password, IUserEventObserver observer)
         {
             if (id == null)
-                throw new ArgumentNullException(nameof(id));
+                throw new ResultException(ResultCodeType.RequestError, nameof(id));
             if (password == null)
-                throw new ArgumentNullException(nameof(password));
+                throw new ResultException(ResultCodeType.RequestError, nameof(password));
+            if (observer == null)
+                throw new ResultException(ResultCodeType.RequestError, nameof(observer));
 
             // Check account
 
@@ -94,13 +97,13 @@ namespace GameServer
             try
             {
                 user = Context.System.ActorOf(
-                    Props.Create<UserActor>(_clusterContext, _clientSession, userId, userContext, observerId),
+                    Props.Create<UserActor>(_clusterContext, _clientSession, userId, userContext, observer),
                     "user_" + userId);
             }
             catch (Exception e)
             {
                 _logger.Error($"Exception in creating UserActor({userId}", e);
-                throw new ResultException(ResultCodeType.LoginFailedInternalError);
+                throw new ResultException(ResultCodeType.InternalError);
             }
 
             // Register User in UserTable
@@ -127,8 +130,19 @@ namespace GameServer
 
             var reply2 = await _clientSession.Ask<ActorBoundSessionMessage.BindReply>(
                 new ActorBoundSessionMessage.Bind(user, typeof(IUser), null));
+            if (reply2.ActorId == 0)
+            {
+                user.Tell(InterfacedPoisonPill.Instance);
+                _logger.Error($"Failed in binding UserActor({userId}");
+                throw new ResultException(ResultCodeType.InternalError);
+            }
 
-            return new LoginResult { UserId = userId, UserContext = userContext, UserActorBindId = reply2.ActorId };
+            return new LoginResult
+            {
+                UserId = userId,
+                User = BoundActorRef.Create<UserRef>(reply2.ActorId),
+                UserContext = userContext
+            };
         }
 
         private Tuple<long, TrackableUserContext> CreateUser(string accountId)

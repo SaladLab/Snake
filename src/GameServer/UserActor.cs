@@ -11,25 +11,26 @@ using Domain;
 namespace GameServer
 {
     [Log]
-    public class UserActor : InterfacedActor<UserActor>, IUser
+    [ResponsiveException(typeof(ResultException))]
+    public class UserActor : InterfacedActor, IUser
     {
         private ILog _logger;
         private ClusterNodeContext _clusterContext;
         private IActorRef _clientSession;
         private long _id;
         private TrackableUserContext _userContext;
-        private UserEventObserver _userEventObserver;
+        private IUserEventObserver _userEventObserver;
         private Dictionary<long, GameRef> _joinedGameMap;
 
         public UserActor(ClusterNodeContext clusterContext, IActorRef clientSession,
-                         long id, TrackableUserContext userContext, int observerId)
+                         long id, TrackableUserContext userContext, IUserEventObserver observer)
         {
             _logger = LogManager.GetLogger($"UserActor({id})");
             _clusterContext = clusterContext;
             _clientSession = clientSession;
             _id = id;
             _userContext = userContext;
-            _userEventObserver = new UserEventObserver(clientSession, observerId);
+            _userEventObserver = observer;
             _joinedGameMap = new Dictionary<long, GameRef>();
         }
 
@@ -47,9 +48,8 @@ namespace GameServer
             Context.Stop(Self);
         }
 
-        Task IUser.RegisterPairing(GameDifficulty difficulty, int observerId)
+        Task IUser.RegisterPairing(GameDifficulty difficulty, IUserPairingObserver observer)
         {
-            var observer = new UserPairingObserver(_clientSession, observerId);
             return _clusterContext.GamePairMaker.RegisterPairing(_id, _userContext.Data.Name, difficulty, observer);
         }
 
@@ -58,7 +58,7 @@ namespace GameServer
             return _clusterContext.GamePairMaker.UnregisterPairing(_id);
         }
 
-        async Task<Tuple<int, int, GameInfo>> IUser.JoinGame(long gameId, int observerId)
+        async Task<Tuple<IGameClient, int, GameInfo>> IUser.JoinGame(long gameId, IGameObserver observer)
         {
             if (_joinedGameMap.ContainsKey(gameId))
                 throw new ResultException(ResultCodeType.NeedToBeOutOfGame);
@@ -74,17 +74,21 @@ namespace GameServer
 
             // Let's enter the game !
 
-            var observer = new GameObserver(_clientSession, observerId);
-
             var joinRet = await game.Join(_id, _userContext.Data.Name, observer);
 
             // Bind an player actor with client session
 
             var reply2 = await _clientSession.Ask<ActorBoundSessionMessage.BindReply>(
                 new ActorBoundSessionMessage.Bind(game.Actor, typeof(IGameClient), joinRet.Item1));
+            if (reply2.ActorId == 0)
+            {
+                await game.Leave(_id);
+                _logger.Error($"Failed in binding GameClient");
+                throw new ResultException(ResultCodeType.InternalError);
+            }
 
             _joinedGameMap[gameId] = game;
-            return Tuple.Create(reply2.ActorId, joinRet.Item1, joinRet.Item2);
+            return Tuple.Create((IGameClient)BoundActorRef.Create<GameClientRef>(reply2.ActorId), joinRet.Item1, joinRet.Item2);
         }
 
         async Task IUser.LeaveGame(long gameId)
@@ -96,8 +100,6 @@ namespace GameServer
             // Let's exit from the game !
 
             await game.Leave(_id);
-
-            // TODO: Remove observer when leave
 
             // Unbind an player actor with client session
 

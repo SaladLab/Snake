@@ -7,10 +7,11 @@ namespace Domain
     public enum ResultCodeType
     {
         None = 0,
+        RequestError = 1,
+        InternalError = 2,
         LoginFailedNoUser = 10,
         LoginFailedIncorrectPassword,
         LoginFailedAlreadyConnected,
-        LoginFailedInternalError,
         NeedToBeInGame = 20,
         NeedToBeOutOfGame,
         NotYourTurn,
@@ -25,14 +26,16 @@ namespace Domain
     public class ResultException : Exception
     {
         [ProtoMember(1)] public ResultCodeType ResultCode;
+        [ProtoMember(2)] public string AdditionalMessage;
 
         public ResultException()
         {
         }
 
-        public ResultException(ResultCodeType resultCode)
+        public ResultException(ResultCodeType resultCode, string additionalMessage = null)
         {
             ResultCode = resultCode;
+            AdditionalMessage = additionalMessage;
         }
 
         public override string ToString()

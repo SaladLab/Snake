@@ -6,9 +6,9 @@ namespace Domain
 {
     public interface IUser : IInterfacedActor
     {
-        Task RegisterPairing(GameDifficulty difficulty, int observerId);
+        Task RegisterPairing(GameDifficulty difficulty, IUserPairingObserver observer);
         Task UnregisterPairing();
-        Task<Tuple<int, int, GameInfo>> JoinGame(long gameId, int observerId);
+        Task<Tuple<IGameClient, int, GameInfo>> JoinGame(long gameId, IGameObserver observer);
         Task LeaveGame(long gameId);
     }
 }
