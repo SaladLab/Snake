@@ -9,7 +9,6 @@ public class GameTestScene : MonoBehaviour
     {
         ClientEntityFactory.Default.RootTransform = GameEntityRoot;
 
-        ApplicationComponent.TryInit();
         UiManager.Initialize();
     }
 }

@@ -16,30 +16,8 @@ public static class G
 
     public static Communicator Comm
     {
-        get
-        {
-            return _comm;
-        }
-        set
-        {
-            _comm = value;
-            if (_comm != null)
-            {
-                _comm.ObserverEventPoster = c => ApplicationComponent.Post(c, null);
-                _slimRequestWaiter = new SlimRequestWaiter(_comm, ApplicationComponent.Instance);
-            }
-            else
-            {
-                _slimRequestWaiter = null;
-            }
-        }
-    }
-
-    private static SlimRequestWaiter _slimRequestWaiter;
-
-    public static SlimRequestWaiter SlimRequestWaiter
-    {
-        get { return _slimRequestWaiter; }
+        get { return _comm; }
+        set { _comm = value; }
     }
 
     public static readonly IPEndPoint DefaultServerEndPoint = new IPEndPoint(IPAddress.Loopback, 9001);
