@@ -1,6 +1,6 @@
 {
   "Id": "EntityNetwork",
-  "Version": "0.2.0",
+  "Version": "0.2.1",
   "Authors": [
     "Esun Kim"
   ],
@@ -14,8 +14,8 @@
       "Source": "github:SaladLab/NetLegacySupport"
     },
     "protobuf-net": {
-      "Version": "2.0.0.668",
-      "Source": "nuget:net20"
+      "Version": "2.1.0-alpha-1",
+      "Source": "nuget:net30"
     },
     "TrackableData": {
       "Version": "1.*",
@@ -27,10 +27,10 @@
       "Version": "1.1.0"
     },
     "protobuf-net": {
-      "Version": "2.0.0.668"
+      "Version": "2.1.0-alpha-1"
     },
     "TrackableData": {
-      "Version": "1.1.0"
+      "Version": "1.1.1"
     },
     "JsonNet": {
       "Version": "8.0.3"
@@ -92,10 +92,6 @@
     },
     {
       "Target": "Assets/UnityPackages/NetLegacySupport/NetLegacySupport.Tuple.dll",
-      "Merged": true
-    },
-    {
-      "Target": "Assets/UnityPackages/protobuf-net/protobuf-net.dll.mdb",
       "Merged": true
     },
     {
