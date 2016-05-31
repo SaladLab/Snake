@@ -85,7 +85,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityNetwork, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EntityNetwork.0.2.0\lib\net45\EntityNetwork.dll</HintPath>
+      <HintPath>..\..\packages\EntityNetwork.0.2.1-beta\lib\net45\EntityNetwork.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Google.ProtocolBuffers, Version=2.4.1.555, Culture=neutral, PublicKeyToken=55f7125234beb589, processorArchitecture=MSIL">
