@@ -232,7 +232,8 @@ namespace Domain
         [ProtoMember(7)] public EnvelopedObject<int> LoseCount;
         [ProtoMember(8)] public EnvelopedObject<int> DrawCount;
 
-        public static implicit operator TrackableUserDataTrackerSurrogate(TrackablePocoTracker<IUserData> tracker)
+        [ProtoConverter]
+        public static TrackableUserDataTrackerSurrogate Convert(TrackablePocoTracker<IUserData> tracker)
         {
             if (tracker == null)
                 return null;
@@ -272,7 +273,8 @@ namespace Domain
             return surrogate;
         }
 
-        public static implicit operator TrackablePocoTracker<IUserData>(TrackableUserDataTrackerSurrogate surrogate)
+        [ProtoConverter]
+        public static TrackablePocoTracker<IUserData> Convert(TrackableUserDataTrackerSurrogate surrogate)
         {
             if (surrogate == null)
                 return null;
@@ -400,7 +402,8 @@ namespace Domain
         [ProtoMember(1)] public EnvelopedObject<SnakeState> State;
         [ProtoMember(2)] public EnvelopedObject<int> Score;
 
-        public static implicit operator TrackableSnakeDataTrackerSurrogate(TrackablePocoTracker<ISnakeData> tracker)
+        [ProtoConverter]
+        public static TrackableSnakeDataTrackerSurrogate Convert(TrackablePocoTracker<ISnakeData> tracker)
         {
             if (tracker == null)
                 return null;
@@ -422,7 +425,8 @@ namespace Domain
             return surrogate;
         }
 
-        public static implicit operator TrackablePocoTracker<ISnakeData>(TrackableSnakeDataTrackerSurrogate surrogate)
+        [ProtoConverter]
+        public static TrackablePocoTracker<ISnakeData> Convert(TrackableSnakeDataTrackerSurrogate surrogate)
         {
             if (surrogate == null)
                 return null;
@@ -557,7 +561,8 @@ namespace Domain
         [ProtoMember(2)] public EnvelopedObject<TimeSpan> StartTime;
         [ProtoMember(3)] public EnvelopedObject<int> WinnerId;
 
-        public static implicit operator TrackableZoneControllerDataTrackerSurrogate(TrackablePocoTracker<IZoneControllerData> tracker)
+        [ProtoConverter]
+        public static TrackableZoneControllerDataTrackerSurrogate Convert(TrackablePocoTracker<IZoneControllerData> tracker)
         {
             if (tracker == null)
                 return null;
@@ -582,7 +587,8 @@ namespace Domain
             return surrogate;
         }
 
-        public static implicit operator TrackablePocoTracker<IZoneControllerData>(TrackableZoneControllerDataTrackerSurrogate surrogate)
+        [ProtoConverter]
+        public static TrackablePocoTracker<IZoneControllerData> Convert(TrackableZoneControllerDataTrackerSurrogate surrogate)
         {
             if (surrogate == null)
                 return null;
