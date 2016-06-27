@@ -1,6 +1,6 @@
 {
   "Id": "AkkaInterfacedSlimSocket",
-  "Version": "0.2.2",
+  "Version": "0.4.0",
   "Authors": [
     "Esun Kim"
   ],
@@ -10,20 +10,24 @@
   "Description": "SlimSocket-Client for Akka.Interfaced",
   "Dependencies": {
     "AkkaInterfaced": {
-      "Version": "0.2.*",
+      "Version": "0.4.*",
       "Source": "github:SaladLab/Akka.Interfaced"
     },
     "CommonLogging": {
       "Version": "3.*",
       "Source": "github:SaladLab/Common.Logging.Unity3D"
     },
+    "LidgrenUdpNet": {
+      "Version": "1.*",
+      "Source": "github:SaladLab/LidgrenUdpNet"
+    },
     "NetLegacySupport": {
       "Version": "1.*",
       "Source": "github:SaladLab/NetLegacySupport"
     },
     "protobuf-net": {
-      "Version": "2.0.0.668",
-      "Source": "nuget:net20"
+      "Version": "2.1.0-alpha-1",
+      "Source": "nuget:net30"
     },
     "TypeAlias": {
       "Version": "1.*",
@@ -32,16 +36,19 @@
   },
   "MergedDependencies": {
     "AkkaInterfaced": {
-      "Version": "0.2.1"
+      "Version": "0.4.1"
     },
     "CommonLogging": {
       "Version": "3.3.1"
+    },
+    "LidgrenUdpNet": {
+      "Version": "1.0.4"
     },
     "NetLegacySupport": {
       "Version": "1.1.0"
     },
     "protobuf-net": {
-      "Version": "2.0.0.668"
+      "Version": "2.1.0-alpha-1"
     },
     "TypeAlias": {
       "Version": "1.1.2"
@@ -52,14 +59,20 @@
     "Assets/UnityPackages/AkkaInterfacedSlimSocket/Akka.Interfaced.SlimSocket.Base.dll.mdb",
     "Assets/UnityPackages/AkkaInterfacedSlimSocket/Akka.Interfaced.SlimSocket.Client.dll",
     "Assets/UnityPackages/AkkaInterfacedSlimSocket/Akka.Interfaced.SlimSocket.Client.dll.mdb",
-    "Assets/UnityPackages/AkkaInterfacedSlimSocket/SlimRequestWaiter.cs",
-    "Assets/UnityPackages/AkkaInterfacedSlimSocket/SlimTask.cs",
+    "Assets/UnityPackages/AkkaInterfacedSlimSocket/ChannelEventDispatcher.cs",
+    "Assets/UnityPackages/AkkaInterfacedSlimSocket/ChannelFactoryBuilder.cs",
+    "Assets/UnityPackages/AkkaInterfacedSlimSocket/UnitySlimTaskCompletionSource.cs",
+    "Assets/UnityPackages/AkkaInterfacedSlimSocket/UnitySlimTaskFactory.cs",
     {
       "Target": "Assets/UnityPackages/AkkaInterfaced.unitypackage.json",
       "Merged": true
     },
     {
       "Target": "Assets/UnityPackages/CommonLogging.unitypackage.json",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/LidgrenUdpNet.unitypackage.json",
       "Merged": true
     },
     {
@@ -80,14 +93,6 @@
     },
     {
       "Target": "Assets/UnityPackages/AkkaInterfaced/Akka.Interfaced-Base.dll",
-      "Merged": true
-    },
-    {
-      "Target": "Assets/UnityPackages/AkkaInterfaced/Akka.Interfaced-SlimClient.dll.mdb",
-      "Merged": true
-    },
-    {
-      "Target": "Assets/UnityPackages/AkkaInterfaced/Akka.Interfaced-SlimClient.dll",
       "Merged": true
     },
     {
@@ -115,6 +120,14 @@
       "Merged": true
     },
     {
+      "Target": "Assets/UnityPackages/LidgrenUdpNet/LidgrenUdpNet.dll.mdb",
+      "Merged": true
+    },
+    {
+      "Target": "Assets/UnityPackages/LidgrenUdpNet/LidgrenUdpNet.dll",
+      "Merged": true
+    },
+    {
       "Target": "Assets/UnityPackages/NetLegacySupport/NetLegacySupport.Action.dll.mdb",
       "Merged": true
     },
@@ -136,10 +149,6 @@
     },
     {
       "Target": "Assets/UnityPackages/NetLegacySupport/NetLegacySupport.Tuple.dll",
-      "Merged": true
-    },
-    {
-      "Target": "Assets/UnityPackages/protobuf-net/protobuf-net.dll.mdb",
       "Merged": true
     },
     {

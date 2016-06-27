@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Akka.Interfaced.SlimSocket.Client
 {
-    public class SlimTask<TResult> : Task<TResult>, ISlimTaskCompletionSource<TResult>
+    public class UnitySlimTaskCompletionSource<TResult> : Task<TResult>, ISlimTaskCompletionSource<TResult>
     {
         internal MonoBehaviour Owner { get; set; }
 
@@ -26,7 +26,7 @@ namespace Akka.Interfaced.SlimSocket.Client
 
         public TaskStatus Status
         {
-            get; internal set;
+            get; private set;
         }
 
         public Exception Exception
@@ -70,8 +70,8 @@ namespace Akka.Interfaced.SlimSocket.Client
             get
             {
                 return Status == TaskStatus.RanToCompletion ||
-                       Status == TaskStatus.Canceled ||
-                       Status == TaskStatus.Faulted;
+                        Status == TaskStatus.Canceled ||
+                        Status == TaskStatus.Faulted;
             }
         }
 
@@ -85,27 +85,36 @@ namespace Akka.Interfaced.SlimSocket.Client
             get
             {
                 return Status == TaskStatus.Canceled ||
-                       Status == TaskStatus.Faulted;
+                        Status == TaskStatus.Faulted;
             }
         }
 
-        public void SetCanceled()
+        public bool TrySetCanceled()
         {
             if (IsCompleted)
-                throw new InvalidOperationException("Already completed. status=" + Status);
+                return false;
 
             _exception = new OperationCanceledException();
             Status = TaskStatus.Canceled;
+            return true;
         }
 
-        public void SetException(Exception e)
+        public bool TrySetException(Exception e)
         {
+            if (IsCompleted)
+                return false;
+
             Exception = e;
+            return true;
         }
 
-        public void SetResult(TResult result)
+        public bool TrySetResult(TResult result)
         {
+            if (IsCompleted)
+                return false;
+
             Result = result;
+            return true;
         }
 
         public override string ToString()
@@ -118,6 +127,11 @@ namespace Akka.Interfaced.SlimSocket.Client
                 return "Canceled";
 
             return "Status: " + Status;
+        }
+
+        public Task<TResult> Task
+        {
+            get { return this; }
         }
     }
 }
