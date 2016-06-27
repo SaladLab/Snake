@@ -3,7 +3,6 @@
   "Version": "2.1.0-alpha-1",
   "Description": "Nuget package (TFM:net30)",
   "Files": [
-    "protobuf-net.dll",
-    "protobuf-net.dll.mdb"
+    "protobuf-net.dll"
   ]
 }
