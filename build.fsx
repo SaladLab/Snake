@@ -27,7 +27,7 @@ Target "Coverity" <| fun _ -> coveritySolution solution "SaladLab/Snake"
 Target "CI" <| fun _ -> ()
 
 Target "DevLink" <| fun _ ->
-    devlink "./packages" [ "../Akka.Interfaced"; "../Akka.Interfaced.SlimSocket"; "../Akka.Cluster.Utility" ]
+    devlink "./packages" [ "../Akka.Interfaced"; "../Akka.Interfaced.SlimSocket"; "../Akka.Cluster.Utility"; "../EntityNetwork" ]
     
 Target "Help" <| fun _ -> 
     showUsage solution (fun _ -> None)
