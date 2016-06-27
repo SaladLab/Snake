@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Net;
+using System.Threading.Tasks;
+using Akka.Actor;
+using Akka.Cluster.Utility;
+using Akka.Interfaced;
+using Akka.Interfaced.LogFilter;
+using Akka.Interfaced.SlimServer;
 using Common.Logging;
 using Domain;
-using Akka.Actor;
-using Akka.Interfaced;
-using Akka.Cluster.Utility;
-using Akka.Interfaced.LogFilter;
 using MongoDB.Driver;
 using TrackableData;
 using TrackableData.MongoDB;
@@ -19,20 +20,14 @@ namespace GameServer
     {
         private readonly ILog _logger;
         private readonly ClusterNodeContext _clusterContext;
-        private readonly IActorRef _clientSession;
+        private readonly ActorBoundChannelRef _channel;
 
         public UserLoginActor(ClusterNodeContext clusterContext,
-                              IActorRef clientSession, EndPoint clientRemoteEndPoint)
+                              ActorBoundChannelRef channel, EndPoint clientRemoteEndPoint)
         {
             _logger = LogManager.GetLogger($"UserLoginActor({clientRemoteEndPoint})");
             _clusterContext = clusterContext;
-            _clientSession = clientSession;
-        }
-
-        [MessageHandler]
-        private void OnMessage(ActorBoundSessionMessage.SessionTerminated message)
-        {
-            Context.Stop(Self);
+            _channel = channel;
         }
 
         private class AccountUserMapInfo
@@ -44,11 +39,11 @@ namespace GameServer
         async Task<LoginResult> IUserLogin.Login(string id, string password, IUserEventObserver observer)
         {
             if (id == null)
-                throw new ResultException(ResultCodeType.RequestError, nameof(id));
+                throw new ResultException(ResultCodeType.ArgumentError, nameof(id));
             if (password == null)
-                throw new ResultException(ResultCodeType.RequestError, nameof(password));
+                throw new ResultException(ResultCodeType.ArgumentError, nameof(password));
             if (observer == null)
-                throw new ResultException(ResultCodeType.RequestError, nameof(observer));
+                throw new ResultException(ResultCodeType.ArgumentError, nameof(observer));
 
             // Check account
 
@@ -97,7 +92,7 @@ namespace GameServer
             try
             {
                 user = Context.System.ActorOf(
-                    Props.Create<UserActor>(_clusterContext, _clientSession, userId, userContext, observer),
+                    Props.Create<UserActor>(_clusterContext, _channel, userId, userContext, observer),
                     "user_" + userId);
             }
             catch (Exception e)
@@ -122,25 +117,29 @@ namespace GameServer
             }
             if (registered == false)
             {
-                user.Tell(PoisonPill.Instance);
+                user.Tell(InterfacedPoisonPill.Instance);
                 throw new ResultException(ResultCodeType.LoginFailedAlreadyConnected);
             }
 
-            // Bind user actor with client session, which makes client to communicate with this actor.
+            // Bind user actor to channel, which makes client to communicate with this actor.
 
-            var reply2 = await _clientSession.Ask<ActorBoundSessionMessage.BindReply>(
-                new ActorBoundSessionMessage.Bind(user, typeof(IUser), null));
-            if (reply2.ActorId == 0)
+            var boundActor = await _channel.BindActor(
+                user.Cast<UserRef>(),
+                ActorBindingFlags.CloseThenStop | ActorBindingFlags.StopThenCloseChannel);
+            if (boundActor == null)
             {
                 user.Tell(InterfacedPoisonPill.Instance);
                 _logger.Error($"Failed in binding UserActor({userId}");
                 throw new ResultException(ResultCodeType.InternalError);
             }
 
+            // After login successfully, stop this
+            Self.Tell(InterfacedPoisonPill.Instance);
+
             return new LoginResult
             {
                 UserId = userId,
-                User = BoundActorRef.Create<UserRef>(reply2.ActorId),
+                User = boundActor.Cast<UserRef>(),
                 UserContext = userContext
             };
         }

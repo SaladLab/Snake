@@ -39,7 +39,7 @@ namespace GameServer
                     break;
 
                 case nameof(IGamePairMaker):
-                    _clusterContext.GamePairMaker = new GamePairMakerRef(m.Actor);
+                    _clusterContext.GamePairMaker = m.Actor.Cast<GamePairMakerRef>();
                     break;
             }
         }

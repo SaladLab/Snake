@@ -20,8 +20,7 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
     public Text ResultText;
 
     private Tuple<long, string> _pairedGame;
-    private int _gameObserverId;
-    private ObserverEventDispatcher _gameObserver;
+    private IGameObserver _gameObserver;
     private GameClientRef _gameClient;
     private int _gameClientId;
     private GameInfo _gameInfo;
@@ -32,7 +31,6 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
     {
         ClientEntityFactory.Default.RootTransform = GameEntityRoot;
 
-        ApplicationComponent.TryInit();
         UiManager.Initialize();
 
         StartJoinGame();
@@ -43,8 +41,8 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
         if (_zone != null)
         {
             // make gameObserver work in main thread
-            _gameObserver.Pending = false;
-            _gameObserver.Pending = true;
+            _gameObserver.GetEventDispatcher().Pending = false;
+            _gameObserver.GetEventDispatcher().Pending = true;
         }
     }
 
@@ -90,7 +88,7 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
         G.Logger.Info("ProcessLoginUser");
 
         var endPoint = LoginProcessor.GetEndPointAddress(server);
-        var task = LoginProcessor.Login(endPoint, id, password, null);
+        var task = LoginProcessor.Login(this, endPoint, id, password, null);
         yield return task.WaitHandle;
     }
 
@@ -105,9 +103,8 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
 
         _pairedGame = null;
 
-        var observerId = G.Comm.IssueObserverId();
-        G.Comm.AddObserver(observerId, new ObserverEventDispatcher(this));
-        yield return G.User.RegisterPairing(G.GameDifficulty, observerId).WaitHandle;
+        var pairingObserver = G.Channel.CreateObserver<IUserPairingObserver>(this);
+        yield return G.User.RegisterPairing(G.GameDifficulty, pairingObserver).WaitHandle;
 
         var startTime = DateTime.Now;
         while ((DateTime.Now - startTime).TotalSeconds < 5 && _pairedGame == null)
@@ -115,7 +112,8 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
             yield return null;
         }
 
-        G.Comm.RemoveObserver(observerId);
+        G.Channel.RemoveObserver(pairingObserver);
+
         if (_pairedGame == null)
         {
             yield return G.User.UnregisterPairing().WaitHandle;
@@ -127,23 +125,22 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
 
         // Join Game
 
+        var gameObserver = G.Channel.CreateObserver<IGameObserver>(this, startPending: true);
+        gameObserver.GetEventDispatcher().KeepingOrder = true; // remove after Akka.NET network layer is upgraded
+
         var roomId = _pairedGame.Item1;
-        var observerId2 = G.Comm.IssueObserverId();
-        _gameObserver = new ObserverEventDispatcher(this, startPending: true, keepOrder: true);
-        G.Comm.AddObserver(observerId2, _gameObserver);
-        var joinRet = G.User.JoinGame(roomId, observerId2);
+        var joinRet = G.User.JoinGame(roomId, gameObserver);
         yield return joinRet.WaitHandle;
 
         if (joinRet.Exception != null)
         {
             UiMessageBox.ShowMessageBox("Failed to join\n" + joinRet.Exception);
-            G.Comm.RemoveObserver(observerId2);
-            _gameObserver = null;
+            G.Channel.RemoveObserver(gameObserver);
             yield break;
         }
 
-        _gameObserverId = observerId2;
-        _gameClient = new GameClientRef(new SlimActorRef(joinRet.Result.Item1), G.SlimRequestWaiter, null);
+        _gameObserver = gameObserver;
+        _gameClient = (GameClientRef)joinRet.Result.Item1;
         _gameClientId = joinRet.Result.Item2;
         _gameInfo = joinRet.Result.Item3;
 
@@ -250,7 +247,7 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
         if (_gameInfo != null)
         {
             G.User.LeaveGame(_gameInfo.Id);
-            G.Comm.RemoveObserver(_gameObserverId);
+            G.Channel.RemoveObserver(_gameObserver);
         }
 
         SceneManager.LoadScene("MainScene");

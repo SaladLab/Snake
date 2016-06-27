@@ -22,7 +22,6 @@ public class MainScene : MonoBehaviour
 
     protected void Start()
     {
-        ApplicationComponent.TryInit();
         UiManager.Initialize();
 
         StartLogin();
@@ -72,7 +71,7 @@ public class MainScene : MonoBehaviour
 
         SwitchPanel(LoginPanel, LoadingPanel);
 
-        var task = LoginProcessor.Login(endPoint, id, password, p => LoadingText.text = p + "...");
+        var task = LoginProcessor.Login(this, endPoint, id, password, p => LoadingText.text = p + "...");
         yield return task.WaitHandle;
 
         if (task.Status == TaskStatus.RanToCompletion)
@@ -147,8 +146,8 @@ public class MainScene : MonoBehaviour
         PlayerPrefs.DeleteKey("LoginId");
         PlayerPrefs.DeleteKey("LoginPassword");
 
-        G.Comm.Stop();
-        G.Comm = null;
+        G.Channel.Close();
+        G.Channel = null;
         G.User = null;
 
         SwitchPanel(MainPanel, LoginPanel);

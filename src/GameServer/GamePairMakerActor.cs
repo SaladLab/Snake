@@ -12,6 +12,7 @@ using Domain;
 namespace GameServer
 {
     [Log(LogFilterTarget.Request)]
+    [ResponsiveException(typeof(ResultException))]
     public class GamePairMakerActor : InterfacedActor, IExtendedInterface<IGamePairMaker>
     {
         private readonly ILog _logger = LogManager.GetLogger("GamePairMaker");
