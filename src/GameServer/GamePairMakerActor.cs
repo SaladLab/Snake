@@ -79,16 +79,15 @@ namespace GameServer
                 long gameId;
                 try
                 {
-                    var ret = await _clusterContext.GameTable.Ask<DistributedActorTableMessage<long>.CreateReply>(
-                        new DistributedActorTableMessage<long>.Create(
-                            new object[]
+                    var ret = await _clusterContext.GameTable.Create(
+                        new object[]
+                        {
+                            new CreateGameParam
                             {
-                                new CreateGameParam
-                                {
-                                    Difficulty = GameDifficulty.Normal,
-                                    WithBot = false,
-                                }
-                            }));
+                                Difficulty = GameDifficulty.Normal,
+                                WithBot = false,
+                            }
+                        });
                     gameId = ret.Id;
                 }
                 catch (Exception e)
@@ -113,16 +112,15 @@ namespace GameServer
                     long gameId;
                     try
                     {
-                        var ret = await _clusterContext.GameTable.Ask<DistributedActorTableMessage<long>.CreateReply>(
-                            new DistributedActorTableMessage<long>.Create(
-                                new object[]
+                        var ret = await _clusterContext.GameTable.Create(
+                            new object[]
+                            {
+                                new CreateGameParam
                                 {
-                                    new CreateGameParam
-                                    {
-                                        Difficulty = GameDifficulty.Normal,
-                                        WithBot = true,
-                                    }
-                                }));
+                                    Difficulty = GameDifficulty.Normal,
+                                    WithBot = true,
+                                }
+                            });
                         gameId = ret.Id;
                     }
                     catch (Exception e)
