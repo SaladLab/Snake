@@ -28,6 +28,20 @@ namespace Domain
         [IgnoreDataMember]
         public IPocoTracker<IUserData> Tracker { get; set; }
 
+        public TrackableUserData Clone()
+        {
+            var o = new TrackableUserData();
+            o._Name = _Name;
+            o._RegisterTime = _RegisterTime;
+            o._LastLoginTime = _LastLoginTime;
+            o._LoginCount = _LoginCount;
+            o._PlayCount = _PlayCount;
+            o._WinCount = _WinCount;
+            o._LoseCount = _LoseCount;
+            o._DrawCount = _DrawCount;
+            return o;
+        }
+
         [IgnoreDataMember]
         public bool Changed { get { return Tracker != null && Tracker.HasChange; } }
 
@@ -55,6 +69,11 @@ namespace Domain
                 var t = (IPocoTracker<IUserData>)value;
                 Tracker = t;
             }
+        }
+
+        ITrackable ITrackable.Clone()
+        {
+            return Clone();
         }
 
         public ITrackable GetChildTrackable(object name)
@@ -312,6 +331,14 @@ namespace Domain
         [IgnoreDataMember]
         public IPocoTracker<ISnakeData> Tracker { get; set; }
 
+        public TrackableSnakeData Clone()
+        {
+            var o = new TrackableSnakeData();
+            o._State = _State;
+            o._Score = _Score;
+            return o;
+        }
+
         [IgnoreDataMember]
         public bool Changed { get { return Tracker != null && Tracker.HasChange; } }
 
@@ -339,6 +366,11 @@ namespace Domain
                 var t = (IPocoTracker<ISnakeData>)value;
                 Tracker = t;
             }
+        }
+
+        ITrackable ITrackable.Clone()
+        {
+            return Clone();
         }
 
         public ITrackable GetChildTrackable(object name)
@@ -452,6 +484,15 @@ namespace Domain
         [IgnoreDataMember]
         public IPocoTracker<IZoneControllerData> Tracker { get; set; }
 
+        public TrackableZoneControllerData Clone()
+        {
+            var o = new TrackableZoneControllerData();
+            o._State = _State;
+            o._StartTime = _StartTime;
+            o._WinnerId = _WinnerId;
+            return o;
+        }
+
         [IgnoreDataMember]
         public bool Changed { get { return Tracker != null && Tracker.HasChange; } }
 
@@ -479,6 +520,11 @@ namespace Domain
                 var t = (IPocoTracker<IZoneControllerData>)value;
                 Tracker = t;
             }
+        }
+
+        ITrackable ITrackable.Clone()
+        {
+            return Clone();
         }
 
         public ITrackable GetChildTrackable(object name)
@@ -630,6 +676,13 @@ namespace Domain
             }
         }
 
+        public TrackableUserContext Clone()
+        {
+            var o = new TrackableUserContext();
+            o._Data = _Data?.Clone();
+            return o;
+        }
+
         public bool Changed { get { return Tracker != null && Tracker.HasChange; } }
 
         ITracker ITrackable.Tracker
@@ -669,6 +722,11 @@ namespace Domain
                 var t = (TrackableUserContextTracker)value;
                 Tracker = t;
             }
+        }
+
+        ITrackable ITrackable.Clone()
+        {
+            return Clone();
         }
 
         public ITrackable GetChildTrackable(object name)

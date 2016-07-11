@@ -22,19 +22,21 @@ namespace Domain
     public class SurrogateForIRequestTarget
     {
         [ProtoMember(1)] public int Id;
+        [ProtoMember(2)] public string Address;
 
         [ProtoConverter]
         public static SurrogateForIRequestTarget Convert(IRequestTarget value)
         {
             if (value == null) return null;
-            return new SurrogateForIRequestTarget { Id = ((BoundActorTarget)value).Id };
+            var target = ((BoundActorTarget)value);
+            return new SurrogateForIRequestTarget { Id = target.Id, Address = target.Address };
         }
 
         [ProtoConverter]
         public static IRequestTarget Convert(SurrogateForIRequestTarget value)
         {
             if (value == null) return null;
-            return new BoundActorTarget(value.Id);
+            return new BoundActorTarget(value.Id, value.Address);
         }
     }
 }
@@ -59,7 +61,7 @@ namespace Domain
             : IInterfacedPayload, IAsyncInvokable, IPayloadTagOverridable
         {
             [ProtoMember(1)] public System.Byte[] bytes;
-            [ProtoMember(2)] public System.Int32 clientId;
+            [ProtoMember(2)] public int clientId;
 
             public Type GetInterfaceType()
             {
@@ -73,14 +75,14 @@ namespace Domain
 
             void IPayloadTagOverridable.SetTag(object value)
             {
-                clientId = (System.Int32)value;
+                clientId = (int)value;
             }
         }
     }
 
     public interface IGameClient_NoReply
     {
-        void ZoneMessage(System.Byte[] bytes, System.Int32 clientId = 0);
+        void ZoneMessage(System.Byte[] bytes, int clientId = 0);
     }
 
     public class GameClientRef : InterfacedActorRef, IGameClient, IGameClient_NoReply
@@ -114,7 +116,7 @@ namespace Domain
             return new GameClientRef(Target, RequestWaiter, timeout);
         }
 
-        public Task ZoneMessage(System.Byte[] bytes, System.Int32 clientId = 0)
+        public Task ZoneMessage(System.Byte[] bytes, int clientId = 0)
         {
             var requestMessage = new RequestMessage {
                 InvokePayload = new IGameClient_PayloadTable.ZoneMessage_Invoke { bytes = bytes, clientId = clientId }
@@ -122,7 +124,7 @@ namespace Domain
             return SendRequestAndWait(requestMessage);
         }
 
-        void IGameClient_NoReply.ZoneMessage(System.Byte[] bytes, System.Int32 clientId)
+        void IGameClient_NoReply.ZoneMessage(System.Byte[] bytes, int clientId)
         {
             var requestMessage = new RequestMessage {
                 InvokePayload = new IGameClient_PayloadTable.ZoneMessage_Invoke { bytes = bytes, clientId = clientId }
@@ -174,7 +176,7 @@ namespace Domain
         public class JoinGame_Invoke
             : IInterfacedPayload, IAsyncInvokable, IPayloadObserverUpdatable
         {
-            [ProtoMember(1)] public System.Int64 gameId;
+            [ProtoMember(1)] public long gameId;
             [ProtoMember(2)] public Domain.IGameObserver observer;
 
             public Type GetInterfaceType()
@@ -200,7 +202,7 @@ namespace Domain
         public class JoinGame_Return
             : IInterfacedPayload, IValueGetable, IPayloadActorRefUpdatable
         {
-            [ProtoMember(1)] public System.Tuple<Domain.IGameClient, System.Int32, Domain.GameInfo> v;
+            [ProtoMember(1)] public System.Tuple<Domain.IGameClient, int, Domain.GameInfo> v;
 
             public Type GetInterfaceType()
             {
@@ -225,7 +227,7 @@ namespace Domain
         public class LeaveGame_Invoke
             : IInterfacedPayload, IAsyncInvokable
         {
-            [ProtoMember(1)] public System.Int64 gameId;
+            [ProtoMember(1)] public long gameId;
 
             public Type GetInterfaceType()
             {
@@ -282,8 +284,8 @@ namespace Domain
 
     public interface IUser_NoReply
     {
-        void JoinGame(System.Int64 gameId, Domain.IGameObserver observer);
-        void LeaveGame(System.Int64 gameId);
+        void JoinGame(long gameId, Domain.IGameObserver observer);
+        void LeaveGame(long gameId);
         void RegisterPairing(Domain.GameDifficulty difficulty, Domain.IUserPairingObserver observer);
         void UnregisterPairing();
     }
@@ -319,15 +321,15 @@ namespace Domain
             return new UserRef(Target, RequestWaiter, timeout);
         }
 
-        public Task<System.Tuple<Domain.IGameClient, System.Int32, Domain.GameInfo>> JoinGame(System.Int64 gameId, Domain.IGameObserver observer)
+        public Task<System.Tuple<Domain.IGameClient, int, Domain.GameInfo>> JoinGame(long gameId, Domain.IGameObserver observer)
         {
             var requestMessage = new RequestMessage {
                 InvokePayload = new IUser_PayloadTable.JoinGame_Invoke { gameId = gameId, observer = (GameObserver)observer }
             };
-            return SendRequestAndReceive<System.Tuple<Domain.IGameClient, System.Int32, Domain.GameInfo>>(requestMessage);
+            return SendRequestAndReceive<System.Tuple<Domain.IGameClient, int, Domain.GameInfo>>(requestMessage);
         }
 
-        public Task LeaveGame(System.Int64 gameId)
+        public Task LeaveGame(long gameId)
         {
             var requestMessage = new RequestMessage {
                 InvokePayload = new IUser_PayloadTable.LeaveGame_Invoke { gameId = gameId }
@@ -351,7 +353,7 @@ namespace Domain
             return SendRequestAndWait(requestMessage);
         }
 
-        void IUser_NoReply.JoinGame(System.Int64 gameId, Domain.IGameObserver observer)
+        void IUser_NoReply.JoinGame(long gameId, Domain.IGameObserver observer)
         {
             var requestMessage = new RequestMessage {
                 InvokePayload = new IUser_PayloadTable.JoinGame_Invoke { gameId = gameId, observer = (GameObserver)observer }
@@ -359,7 +361,7 @@ namespace Domain
             SendRequest(requestMessage);
         }
 
-        void IUser_NoReply.LeaveGame(System.Int64 gameId)
+        void IUser_NoReply.LeaveGame(long gameId)
         {
             var requestMessage = new RequestMessage {
                 InvokePayload = new IUser_PayloadTable.LeaveGame_Invoke { gameId = gameId }
@@ -424,8 +426,8 @@ namespace Domain
         public class Login_Invoke
             : IInterfacedPayload, IAsyncInvokable, IPayloadObserverUpdatable
         {
-            [ProtoMember(1)] public System.String id;
-            [ProtoMember(2)] public System.String password;
+            [ProtoMember(1)] public string id;
+            [ProtoMember(2)] public string password;
             [ProtoMember(3)] public Domain.IUserEventObserver observer;
 
             public Type GetInterfaceType()
@@ -475,7 +477,7 @@ namespace Domain
 
     public interface IUserLogin_NoReply
     {
-        void Login(System.String id, System.String password, Domain.IUserEventObserver observer);
+        void Login(string id, string password, Domain.IUserEventObserver observer);
     }
 
     public class UserLoginRef : InterfacedActorRef, IUserLogin, IUserLogin_NoReply
@@ -509,7 +511,7 @@ namespace Domain
             return new UserLoginRef(Target, RequestWaiter, timeout);
         }
 
-        public Task<Domain.LoginResult> Login(System.String id, System.String password, Domain.IUserEventObserver observer)
+        public Task<Domain.LoginResult> Login(string id, string password, Domain.IUserEventObserver observer)
         {
             var requestMessage = new RequestMessage {
                 InvokePayload = new IUserLogin_PayloadTable.Login_Invoke { id = id, password = password, observer = (UserEventObserver)observer }
@@ -517,7 +519,7 @@ namespace Domain
             return SendRequestAndReceive<Domain.LoginResult>(requestMessage);
         }
 
-        void IUserLogin_NoReply.Login(System.String id, System.String password, Domain.IUserEventObserver observer)
+        void IUserLogin_NoReply.Login(string id, string password, Domain.IUserEventObserver observer)
         {
             var requestMessage = new RequestMessage {
                 InvokePayload = new IUserLogin_PayloadTable.Login_Invoke { id = id, password = password, observer = (UserEventObserver)observer }
@@ -621,7 +623,7 @@ namespace Domain
         [ProtoContract, TypeAlias]
         public class End_Invoke : IInterfacedPayload, IInvokable
         {
-            [ProtoMember(1)] public System.Int32 winnerId;
+            [ProtoMember(1)] public int winnerId;
 
             public Type GetInterfaceType()
             {
@@ -637,9 +639,9 @@ namespace Domain
         [ProtoContract, TypeAlias]
         public class Join_Invoke : IInterfacedPayload, IInvokable
         {
-            [ProtoMember(1)] public System.Int64 userId;
-            [ProtoMember(2)] public System.String userName;
-            [ProtoMember(3)] public System.Int32 clientId;
+            [ProtoMember(1)] public long userId;
+            [ProtoMember(2)] public string userName;
+            [ProtoMember(3)] public int clientId;
 
             public Type GetInterfaceType()
             {
@@ -655,7 +657,7 @@ namespace Domain
         [ProtoContract, TypeAlias]
         public class Leave_Invoke : IInterfacedPayload, IInvokable
         {
-            [ProtoMember(1)] public System.Int64 userId;
+            [ProtoMember(1)] public long userId;
 
             public Type GetInterfaceType()
             {
@@ -709,19 +711,19 @@ namespace Domain
             Notify(payload);
         }
 
-        public void End(System.Int32 winnerId)
+        public void End(int winnerId)
         {
             var payload = new IGameObserver_PayloadTable.End_Invoke { winnerId = winnerId };
             Notify(payload);
         }
 
-        public void Join(System.Int64 userId, System.String userName, System.Int32 clientId)
+        public void Join(long userId, string userName, int clientId)
         {
             var payload = new IGameObserver_PayloadTable.Join_Invoke { userId = userId, userName = userName, clientId = clientId };
             Notify(payload);
         }
 
-        public void Leave(System.Int64 userId)
+        public void Leave(long userId)
         {
             var payload = new IGameObserver_PayloadTable.Leave_Invoke { userId = userId };
             Notify(payload);
@@ -849,8 +851,8 @@ namespace Domain
         [ProtoContract, TypeAlias]
         public class MakePair_Invoke : IInterfacedPayload, IInvokable
         {
-            [ProtoMember(1)] public System.Int64 gameId;
-            [ProtoMember(2)] public System.String opponentName;
+            [ProtoMember(1)] public long gameId;
+            [ProtoMember(2)] public string opponentName;
 
             public Type GetInterfaceType()
             {
@@ -876,7 +878,7 @@ namespace Domain
         {
         }
 
-        public void MakePair(System.Int64 gameId, System.String opponentName)
+        public void MakePair(long gameId, string opponentName)
         {
             var payload = new IUserPairingObserver_PayloadTable.MakePair_Invoke { gameId = gameId, opponentName = opponentName };
             Notify(payload);

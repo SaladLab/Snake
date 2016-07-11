@@ -4,7 +4,6 @@ using System.Linq;
 using Akka.Actor;
 using Akka.Interfaced;
 using Akka.Interfaced.LogFilter;
-using Akka.Interfaced.ProtobufSerializer;
 using Common.Logging;
 using Domain;
 using EntityNetwork;
