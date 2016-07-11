@@ -1,5 +1,4 @@
-﻿using System;
-using Topshelf;
+﻿using Topshelf;
 
 namespace GameServer
 {
@@ -12,9 +11,9 @@ namespace GameServer
                 string runner = null;
                 x.AddCommandLineDefinition("runner", val => runner = val);
 
-                x.SetServiceName("GameServer");
-                x.SetDisplayName("GameServer for Snake");
-                x.SetDescription("GameServer for Snake using Akka.NET and Akka.Interfaced.");
+                x.SetServiceName("Snake");
+                x.SetDisplayName("Snake Service");
+                x.SetDescription("Snake Service using Akka.NET and Akka.Interfaced. (https://github.com/SaladLab/Snake)");
 
                 x.UseAssemblyInfoForServiceInfo();
                 x.RunAsLocalSystem();
