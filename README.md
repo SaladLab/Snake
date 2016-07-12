@@ -1,7 +1,7 @@
 # Snake
 
 [![Build status](https://ci.appveyor.com/api/projects/status/vjl1hutlob8w3s5w?svg=true)](https://ci.appveyor.com/project/veblush/snake)
-[![Coverage Status](https://coveralls.io/repos/github/SaladLab/Snake/badge.svg?branch=master)](https://coveralls.io/github/SaladLab/Snake/Snake?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/SaladLab/Snake/badge.svg?branch=master)](https://coveralls.io/github/SaladLab/Snake?branch=master)
 
 Reference game using EntityNetwork, Akka.Interfaced and TrackableData.
 
