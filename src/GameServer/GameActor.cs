@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using Akka.Actor;
 using Akka.Interfaced;
+using Akka.Interfaced.SlimSocket;
 using Akka.Interfaced.LogFilter;
 using Common.Logging;
 using Domain;
 using EntityNetwork;
 using ProtoBuf.Meta;
 using TypeAlias;
+using Akka.Interfaced.SlimServer;
 
 namespace GameServer
 {
     [Log]
     [ResponsiveException(typeof(ResultException))]
-    public class GameActor : InterfacedActor, IExtendedInterface<IGame, IGameClient>
+    public class GameActor : InterfacedActor, IGameSync, IGameClientSync, IActorBoundChannelObserver
     {
         private ILog _logger;
         private ClusterNodeContext _clusterContext;
@@ -32,7 +34,7 @@ namespace GameServer
 
             void IByteChannel.Write(byte[] bytes)
             {
-                Observer.ZoneMessage(bytes);
+                Observer?.ZoneMessage(bytes);
             }
         }
 
@@ -102,8 +104,7 @@ namespace GameServer
             });
         }
 
-        [ExtendedHandler]
-        private Tuple<int, GameInfo> Join(long userId, string userName, IGameObserver observer)
+        Tuple<int, GameInfo> IGameSync.Join(long userId, string userName, IGameObserver observer)
         {
             if (_state != GameState.Waiting)
                 throw new ResultException(ResultCodeType.GameStarted);
@@ -182,8 +183,7 @@ namespace GameServer
             return index + 1;
         }
 
-        [ExtendedHandler]
-        private void Leave(long userId)
+        void IGameSync.Leave(long userId)
         {
             var clientId = GetClientId(userId);
 
@@ -205,8 +205,7 @@ namespace GameServer
             }
         }
 
-        [ExtendedHandler]
-        private void ZoneMessage(byte[] bytes, int clientId = 0)
+        void IGameClientSync.ZoneMessage(byte[] bytes, int clientId)
         {
             if (clientId < 1 || clientId > _clients.Count)
                 throw new InvalidOperationException();
@@ -216,6 +215,40 @@ namespace GameServer
             {
                 client.InboundChannel.Write(bytes);
             });
+        }
+
+        void IActorBoundChannelObserver.ChannelOpen(IActorBoundChannel channel, object tag)
+        {
+            if (tag == null)
+                return;
+
+            // Change notification message route to open channel
+
+            var userId = (long)tag;
+            var client = _clients.FirstOrDefault(p => p.UserId == userId);
+            if (client != null && client.Observer != null)
+            {
+                var observerChannel = client.Observer.Channel as AkkaReceiverNotificationChannel;
+                if (observerChannel != null)
+                    client.Observer.Channel = new AkkaReceiverNotificationChannel(((ActorBoundChannelRef)channel).CastToIActorRef());
+            }
+        }
+
+        void IActorBoundChannelObserver.ChannelOpenTimeout(object tag)
+        {
+        }
+
+        void IActorBoundChannelObserver.ChannelClose(IActorBoundChannel channel, object tag)
+        {
+            if (tag == null)
+                return;
+
+            // Deactivate observer bound to closed channel
+
+            var userId = (long)tag;
+            var client = _clients.FirstOrDefault(p => p.UserId == userId);
+            if (client != null)
+                client.Observer = null;
         }
     }
 }
