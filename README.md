@@ -1,5 +1,8 @@
 # Snake
 
+[![Build status](https://ci.appveyor.com/api/projects/status/vjl1hutlob8w3s5w?svg=true)](https://ci.appveyor.com/project/veblush/snake)
+[![Coverage Status](https://coveralls.io/repos/github/SaladLab/Snake/badge.svg?branch=master)](https://coveralls.io/github/SaladLab/Snake/Snake?branch=master)
+
 Reference game using EntityNetwork, Akka.Interfaced and TrackableData.
 
 ![Screenshot](https://raw.githubusercontent.com/SaladLab/Snake/master/docs/MainScene.jpg)
@@ -17,10 +20,10 @@ Reference game using EntityNetwork, Akka.Interfaced and TrackableData.
 
 - Make sure MongoDB is running well.
   - By default server connects to local MongoDB.
-  - Address of MongoDB can be configured on src/GameServer-Console/App.config.
+  - Address of MongoDB can be configured on src/GameServer/App.config.
 - Run Server
   - Open Snake.sln with Visual Studio.
-  - Run GameServer-Console.
+  - Run GameServer.
 - Run Client
   - Open src/GameClient with Unity.
   - Open Scenes/MainScene and run.
