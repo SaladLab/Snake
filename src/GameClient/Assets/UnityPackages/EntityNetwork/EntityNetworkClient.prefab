@@ -26,7 +26,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -55,22 +54,22 @@ MonoBehaviour:
   m_SceneId:
     m_Value: 0
   m_AssetId:
-    i0: 63
-    i1: 158
-    i2: 155
-    i3: 79
-    i4: 246
-    i5: 61
-    i6: 92
-    i7: 108
-    i8: 143
-    i9: 165
-    i10: 14
-    i11: 215
-    i12: 63
-    i13: 59
-    i14: 43
-    i15: 41
+    i0: 29
+    i1: 72
+    i2: 233
+    i3: 101
+    i4: 219
+    i5: 19
+    i6: 60
+    i7: 164
+    i8: 139
+    i9: 31
+    i10: 35
+    i11: 104
+    i12: 26
+    i13: 239
+    i14: 232
+    i15: 27
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
 --- !u!1001 &100100000
