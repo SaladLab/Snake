@@ -66,7 +66,7 @@ public class MainScene : MonoBehaviour
         }
         catch (Exception e)
         {
-            UiMessageBox.ShowMessageBox("Server EndPoint Error: " + e);
+            UiMessageBox.Show("Server EndPoint Error: " + e);
             yield break;
         }
 
@@ -86,7 +86,7 @@ public class MainScene : MonoBehaviour
         }
         else
         {
-            UiMessageBox.ShowMessageBox(task.Exception.Message);
+            UiMessageBox.Show(task.Exception.Message);
             SwitchPanel(LoadingPanel, LoginPanel);
 
             PlayerPrefs.DeleteKey("LoginServer");
@@ -103,7 +103,7 @@ public class MainScene : MonoBehaviour
 
         if (string.IsNullOrEmpty(id))
         {
-            UiMessageBox.ShowMessageBox("ID is required.");
+            UiMessageBox.Show("ID is required.");
             return;
         }
 
@@ -114,7 +114,7 @@ public class MainScene : MonoBehaviour
     {
         if (G.User == null)
         {
-            UiMessageBox.ShowMessageBox("Login reqruied.");
+            UiMessageBox.Show("Login reqruied.");
             return;
         }
 
@@ -125,7 +125,7 @@ public class MainScene : MonoBehaviour
     {
         if (G.User == null)
         {
-            UiMessageBox.ShowMessageBox("Login reqruied.");
+            UiMessageBox.Show("Login reqruied.");
             return;
         }
 
