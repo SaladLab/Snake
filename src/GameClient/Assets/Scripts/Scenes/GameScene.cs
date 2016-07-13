@@ -27,6 +27,9 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
     private ClientZone _zone;
     private ProtobufChannelToClientZoneInbound _zoneChannel;
 
+    private bool _isJoining;
+    private bool _isLeaveRequested;
+
     protected void Start()
     {
         ClientEntityFactory.Default.RootTransform = GameEntityRoot;
@@ -94,6 +97,24 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
 
     private IEnumerator ProcessJoinGame()
     {
+        _isJoining = true;
+
+        yield return StartCoroutine(ProcessJoinGameInternal());
+
+        if (_gameClient == null)
+        {
+            SceneManager.LoadScene("MainScene");
+            yield break;
+        }
+
+        if (_isLeaveRequested)
+            LeaveAndReturnToMainScene();
+
+        _isJoining = false;
+    }
+
+    private IEnumerator ProcessJoinGameInternal()
+    {
         G.Logger.Info("ProcessJoinGame");
 
         // Finding Game
@@ -107,7 +128,7 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
         yield return G.User.RegisterPairing(G.GameDifficulty, pairingObserver).WaitHandle;
 
         var startTime = DateTime.Now;
-        while ((DateTime.Now - startTime).TotalSeconds < 5 && _pairedGame == null)
+        while ((DateTime.Now - startTime).TotalSeconds < 5 && _pairedGame == null && _isLeaveRequested == false)
         {
             yield return null;
         }
@@ -117,8 +138,8 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
         if (_pairedGame == null)
         {
             yield return G.User.UnregisterPairing().WaitHandle;
-            var box = UiMessageBox.Show("Cannot find game");
-            yield return StartCoroutine(box.WaitForHide());
+            if (_isLeaveRequested == false)
+                yield return UiMessageBox.Show("Cannot find game").WaitForHide();
             SceneManager.LoadScene("MainScene");
             yield break;
         }
@@ -126,7 +147,7 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
         // Join Game
 
         var gameObserver = G.Communicator.ObserverRegistry.Create<IGameObserver>(this, startPending: true);
-        gameObserver.GetEventDispatcher().KeepingOrder = true; // remove after Akka.NET network layer is upgraded
+        gameObserver.GetEventDispatcher().KeepingOrder = true;
 
         var roomId = _pairedGame.Item1;
         var joinRet = G.User.JoinGame(roomId, gameObserver);
@@ -134,8 +155,8 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
 
         if (joinRet.Exception != null)
         {
-            UiMessageBox.Show("Failed to join\n" + joinRet.Exception);
             G.Communicator.ObserverRegistry.Remove(gameObserver);
+            yield return UiMessageBox.Show("Failed to join\n" + joinRet.Exception).WaitForHide();
             yield break;
         }
 
@@ -150,10 +171,16 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
             yield return connectTask.WaitHandle;
             if (connectTask.Exception != null)
             {
-                UiMessageBox.Show("Failed to connect\n" + joinRet.Exception);
+                _gameClient = null;
                 G.Communicator.ObserverRegistry.Remove(gameObserver);
+                yield return UiMessageBox.Show("Failed to connect\n" + joinRet.Exception).WaitForHide();
                 yield break;
             }
+            ((IChannel)_gameClient.RequestWaiter).StateChanged += (_, state) =>
+            {
+                if (state == ChannelStateType.Closed)
+                    ChannelEventDispatcher.Post(OnChannelClose, _);
+            };
         }
 
         _zone = new ClientZone(
@@ -173,6 +200,12 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
         };
 
         LoadingText.text = "Waiting for " + _pairedGame.Item2 + "...";
+    }
+
+    private void OnChannelClose(object channel)
+    {
+        if (this != null)
+            OnLeaveButtonClick();
     }
 
     void IUserPairingObserver.MakePair(long gameId, string opponentName)
@@ -256,10 +289,27 @@ public class GameScene : MonoBehaviour, IUserPairingObserver, IGameObserver, IBy
 
     public void OnLeaveButtonClick()
     {
+        if (_isLeaveRequested)
+            return;
+
+        _isLeaveRequested = true;
+
+        if (_isJoining)
+            return;
+
+        LeaveAndReturnToMainScene();
+    }
+
+    private void LeaveAndReturnToMainScene()
+    {
         if (_gameInfo != null)
         {
             G.User.LeaveGame(_gameInfo.Id);
             G.Communicator.ObserverRegistry.Remove(_gameObserver);
+
+            var gameClientChannel = (IChannel)_gameClient.RequestWaiter;
+            if (gameClientChannel != G.Communicator.Channels[0])
+                gameClientChannel.Close();
         }
 
         SceneManager.LoadScene("MainScene");
