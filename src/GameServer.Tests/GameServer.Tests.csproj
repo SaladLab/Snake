@@ -195,7 +195,7 @@
     <ProjectReference Include="..\GameServer\GameServer.csproj">
       <Project>{9fc7c16a-68c3-40de-ae75-1267472dbd08}</Project>
       <Name>GameServer</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
