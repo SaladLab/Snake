@@ -40,6 +40,12 @@ public class MainScene : MonoBehaviour
         }
         else
         {
+            if (G.Communicator != null)
+            {
+                UiMessageBox.Show("Connection Closed!");
+                G.Communicator = null;
+            }
+
             LoginPanel.gameObject.SetActive(true);
 
             var loginServer = PlayerPrefs.GetString("LoginServer");
